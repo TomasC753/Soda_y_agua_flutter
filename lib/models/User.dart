@@ -33,6 +33,7 @@ class User implements Iideable {
   factory User.fromJson(Map<String, dynamic> json) {
     User user = User(
         id: json['id'],
+        token: json['token'],
         name: json['name'],
         email: json['email'],
         pivot: json['pivot']);

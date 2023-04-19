@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:soda_y_agua_flutter/paints/WaveLine.dart';
@@ -11,29 +12,14 @@ class MyDrawer extends StatelessWidget {
     return ListView(
       children: [
         DrawerHeader(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              Colors.blueAccent.shade200,
-              Colors.blue.shade700
-            ])),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'SODA Y AGUA',
-                  style: GoogleFonts.lato(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  width: 150,
-                  child: CustomPaint(
-                      painter: WaveLine(amplitude: 15, color: Colors.white)),
-                )
-              ],
-            )),
+            // decoration: BoxDecoration(
+            //     gradient: LinearGradient(colors: [
+            //   Colors.blueAccent.shade200,
+            //   Colors.blue.shade700
+            // ])),
+            child: SvgPicture.asset(
+          'assets/Logo.svg',
+        )),
         ListTile(
           title: const Text('Dashboard'),
           onTap: () => Get.offAllNamed('dashboard'),

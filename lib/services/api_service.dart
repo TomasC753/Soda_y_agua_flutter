@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.5:8000/api/';
+  static const String baseUrl = 'http://192.168.1.7:8000/api/';
 
   final Dio dio = Dio(BaseOptions(
     baseUrl: baseUrl,
@@ -15,7 +15,7 @@ class ApiService {
     prefs.remove('token');
   }
 
-  Future<String>? recoveryToken() async {
+  Future<String> recoveryToken() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
@@ -28,6 +28,11 @@ class ApiService {
     } catch (error) {
       rethrow;
     }
+  }
+
+  void saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', token);
   }
 
   Future<Options> getTokenAuthorization() async {
@@ -44,10 +49,10 @@ class ApiService {
     } on DioError catch (e) {
       if (e.response != null) {
         // Handle known errors
-        throw e.response?.data['message'];
+        throw e.response?.data;
       } else {
         // Handle unknown errors
-        throw 'Unexpected error occurred';
+        throw 'Ha ocurrido un error inesperado';
       }
     }
   }
@@ -60,10 +65,10 @@ class ApiService {
     } on DioError catch (e) {
       if (e.response != null) {
         // Handle known errors
-        throw e.response?.data['message'];
+        throw e.response?.data;
       } else {
         // Handle unknown errors
-        throw 'Unexpected error occurred';
+        throw 'Ha ocurrido un error inesperado';
       }
     }
   }
@@ -76,10 +81,10 @@ class ApiService {
     } on DioError catch (e) {
       if (e.response != null) {
         // Handle known errors
-        throw e.response?.data['message'];
+        throw e.response?.data;
       } else {
         // Handle unknown errors
-        throw 'Unexpected error occurred';
+        throw 'Ha ocurrido un error inesperado';
       }
     }
   }
@@ -91,10 +96,10 @@ class ApiService {
     } on DioError catch (e) {
       if (e.response != null) {
         // Handle known errors
-        throw e.response?.data['message'];
+        throw e.response?.data;
       } else {
         // Handle unknown errors
-        throw 'Unexpected error occurred';
+        throw 'Ha ocurrido un error inesperado';
       }
     }
   }

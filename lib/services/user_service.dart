@@ -6,6 +6,7 @@ import 'api_service.dart';
 
 class UserService extends GetxService {
   // TODO: UserService
+  late User user;
   final api = ApiService();
   static final CrudFunctionalities<User> crudFunctionalities =
       CrudFunctionalities<User>(
@@ -13,15 +14,14 @@ class UserService extends GetxService {
           pluralModelName: 'users',
           serializer: User.fromJson);
 
-  User? user;
-
-  Future<bool> checkToken(String token) async {
+  Future<bool> checkToken() async {
     try {
       final response =
           await api.get('/user', options: await api.getTokenAuthorization());
 
       if (response.statusCode == 200) {
-        user = response.data;
+        user = User.fromJson(response.data);
+        user.token = await api.recoveryToken();
         return true;
       }
       api.removeToken();
@@ -29,6 +29,21 @@ class UserService extends GetxService {
     } catch (e) {
       api.removeToken();
       return false;
+    }
+  }
+
+  Future<bool> login(String email, String password) async {
+    try {
+      var response =
+          await api.post('login', data: {"email": email, "password": password});
+
+      if (response.statusCode == 200) {
+        api.saveToken(response.data['token']);
+        user = User.fromJson(response.data);
+      }
+      return true;
+    } catch (e) {
+      rethrow;
     }
   }
 
