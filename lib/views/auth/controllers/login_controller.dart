@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/services/user_service.dart';
@@ -24,7 +25,7 @@ class LoginController extends GetxController {
       passwordError.value = 'Este campo es requerido';
     }
 
-    return errors > 0 ? false : true;
+    return !(errors > 0);
   }
 
   void login() async {

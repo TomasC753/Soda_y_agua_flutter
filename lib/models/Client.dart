@@ -14,6 +14,7 @@ class Client implements Iideable {
   String domicile;
   String? phoneNumber;
   String? clientNumber;
+  int debtState;
   int zoneId;
   List<Service>? services;
   // List<Consumption>? consumptions;
@@ -28,6 +29,7 @@ class Client implements Iideable {
       required this.domicile,
       this.phoneNumber,
       this.clientNumber,
+      this.debtState = 0,
       this.pivot,
       required this.zoneId});
 
@@ -40,6 +42,7 @@ class Client implements Iideable {
         zoneId: json['zone_id'],
         phoneNumber: json['phone_number'],
         clientNumber: json['client_number'],
+        debtState: json['debt_state'],
         pivot: json['pivot']);
 
     isFilled(

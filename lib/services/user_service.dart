@@ -40,6 +40,7 @@ class UserService extends GetxService {
       if (response.statusCode == 200) {
         api.saveToken(response.data['token']);
         user = User.fromJson(response.data);
+        Get.toNamed('/dashboard');
       }
       return true;
     } catch (e) {

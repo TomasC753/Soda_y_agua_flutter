@@ -68,6 +68,7 @@ class LoginScreen extends GetView<LoginController> {
                           controller: controller.emailController,
                           decoration: InputDecoration(
                               filled: true,
+                              prefixIcon: const Icon(Icons.email),
                               hintText: 'Correo Electronico',
                               errorText: controller.emailError.value.isNotEmpty
                                   ? controller.emailError.value
@@ -85,6 +86,7 @@ class LoginScreen extends GetView<LoginController> {
                           decoration: InputDecoration(
                               filled: true,
                               hintText: 'Contraseña',
+                              prefixIcon: const Icon(Icons.key),
                               errorText:
                                   controller.passwordError.value.isNotEmpty
                                       ? controller.passwordError.value
