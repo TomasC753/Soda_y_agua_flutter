@@ -5,7 +5,6 @@ enum OperationStatus { loading, loadingMore, success, empty, error }
 
 class ServiceResponse<T> {
   late Rx<T> data;
-  // RxStatus status;
   Rxn<OperationStatus> status;
   Future<T> Function() getterFunction;
 
@@ -20,16 +19,11 @@ class ServiceResponse<T> {
       T dataObtained = await getterFunction();
       data.value = dataObtained;
       if (dataObtained != null && dataObtained != List.empty()) {
-        // status = RxStatus.success();
         status.value = OperationStatus.success;
       } else {
-        // status.isEmpty;
-        // status = RxStatus.empty();
         status.value = OperationStatus.empty;
       }
     } catch (e) {
-      // status.isError;
-      // status = RxStatus.error();
       status.value = OperationStatus.error;
       errorMessage.value = e.toString();
     }
