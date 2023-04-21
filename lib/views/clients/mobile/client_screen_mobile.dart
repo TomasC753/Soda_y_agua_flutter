@@ -26,15 +26,22 @@ class ClientScreenMobile extends GetView<ClientController> {
         () => !controller.isLoading.value
             ? CustomScrollView(
                 slivers: [
-                  const SliverAppBar(
-                    title: Text('Clientes'),
-                    actions: [ToggleThemeButton()],
+                  SliverAppBar(
+                    backgroundColor: Theme.of(context).cardColor,
+                    foregroundColor: Theme.of(context).colorScheme.onSurface,
+                    title: Text(
+                      'Clientes',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    actions: const [ToggleThemeButton()],
                   ),
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(17),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        onChanged: (query) => controller.clients.search(query),
+                        decoration: const InputDecoration(
                             labelText: 'Buscar Cliente',
                             filled: true,
                             prefixIcon: Icon(Icons.search),
@@ -51,7 +58,7 @@ class ClientScreenMobile extends GetView<ClientController> {
                           onError: const Text('Ocurrio Un error'),
                           onEmpty: const Text('No hay clientes'),
                           onSuccess: Column(
-                            children: controller.clients.data.value!
+                            children: controller.clients.printedData
                                 .map((client) => Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4),
@@ -85,12 +92,9 @@ class ClientScreenMobile extends GetView<ClientController> {
                                                         .fontSize))
                                           ])),
                                           trailing: client.debtState == 0
-                                              ? Icon(
-                                                  Icons.monetization_on,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                )
+                                              ? Icon(Icons.monetization_on,
+                                                  color:
+                                                      Colors.greenAccent[400])
                                               : Container(
                                                   padding:
                                                       const EdgeInsets.all(1),
