@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/Client.dart';
 
 import 'crud_functionalities.dart';
-import 'service_response.dart';
+import '../utils/service_response.dart';
 
 class ClientService {
   static final CrudFunctionalities<Client> crudFunctionalities =
@@ -12,7 +12,7 @@ class ClientService {
           serializer: Client.fromJson);
 
   // Future<ServiceResponse<List<Client>>> getClients() async {
-  Future<List<Client>?> getClients() async {
+  Future<List<Client>> getClients() async {
     // try {
     //   var response = await crudFunctionalities.getAll();
     //   if (response is List<Client>) {

@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'service_response.dart';
+
+// class SearchableResponseService<T extends List> extends ServiceResponse<T> {
+//   late Rx<T> printedData;
+//   SearchableResponseService(
+//       {required super.data,
+//       required super.status,
+//       required super.getterFunction}) {
+//     printedData = data;
+//   }
+
+// void search(String query) {
+//   if (query.isEmpty) {
+//     printedData = data;
+//   }
+//   query = query.toLowerCase();
+//   printedData = data.
+// }
+// }
+
 enum OperationStatus { loading, loadingMore, success, empty, error }
 
-class ServiceResponse<T> {
+class ServiceResponse<T extends List> {
   late Rx<T> data;
   Rxn<OperationStatus> status;
   Future<T> Function() getterFunction;
@@ -18,7 +38,7 @@ class ServiceResponse<T> {
       status.value = OperationStatus.loading;
       T dataObtained = await getterFunction();
       data.value = dataObtained;
-      if (dataObtained != null && dataObtained != List.empty()) {
+      if (dataObtained.isEmpty) {
         status.value = OperationStatus.success;
       } else {
         status.value = OperationStatus.empty;
