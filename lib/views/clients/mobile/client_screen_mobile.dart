@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soda_y_agua_flutter/utils/service_response.dart';
+import 'package:soda_y_agua_flutter/views/clients/show_client_screen.dart';
 import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
 
 import '../controllers/client_controller.dart';
+import '../create_client_screen.dart';
 
 class ClientScreenMobile extends GetView<ClientController> {
   ClientScreenMobile({Key? key}) : super(key: key);
@@ -19,7 +22,13 @@ class ClientScreenMobile extends GetView<ClientController> {
         child: MyDrawer(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => Get.to(
+            () => CreateClientScreen(
+                  onFisnih: () => controller.clients.getData(),
+                ),
+            fullscreenDialog: true,
+            transition: Transition.downToUp,
+            duration: const Duration(milliseconds: 250)),
         child: const Icon(Icons.add),
       ),
       body: Obx(
@@ -64,6 +73,90 @@ class ClientScreenMobile extends GetView<ClientController> {
                                           vertical: 4),
                                       child: Card(
                                         child: ListTile(
+                                          onLongPress: () =>
+                                              Get.dialog(AlertDialog(
+                                            title:
+                                                const Text('Eliminar cliente'),
+                                            icon: const Icon(Icons.warning),
+                                            iconColor: Colors.orange,
+                                            content: Text(
+                                                '¿Estas seguro de que deseas eliminar a ${client.lastName} ${client.name}?'),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () => Get.back(),
+                                                  child:
+                                                      const Text('Cancelar')),
+                                              TextButton(
+                                                onPressed: () => {
+                                                  controller.clientService
+                                                      .delete(client),
+                                                  controller.clients.getData(),
+                                                  Get.back()
+                                                },
+                                                style: TextButton.styleFrom(
+                                                    foregroundColor:
+                                                        Colors.red),
+                                                child: const Text('Eliminar'),
+                                              )
+                                            ],
+                                          )),
+                                          onTap: () => {
+                                            controller.selectedClient.getData(
+                                                id: client.id,
+                                                whileLoading: AlertDialog(
+                                                    content: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: const [
+                                                    CircularProgressIndicator()
+                                                  ],
+                                                )),
+                                                onSuccess: (client) => {
+                                                      Get.to(ShowClientScreen(
+                                                        client: client,
+                                                        deleteACtion: () =>
+                                                            Get.dialog(
+                                                                AlertDialog(
+                                                          title: const Text(
+                                                              'Eliminar cliente'),
+                                                          icon: const Icon(
+                                                              Icons.warning),
+                                                          iconColor:
+                                                              Colors.orange,
+                                                          content: Text(
+                                                              '¿Estas seguro de que deseas eliminar a ${client.lastName} ${client.name}?'),
+                                                          actions: [
+                                                            TextButton(
+                                                                onPressed: () =>
+                                                                    Get.back(),
+                                                                child: const Text(
+                                                                    'Cancelar')),
+                                                            TextButton(
+                                                              onPressed: () => {
+                                                                controller
+                                                                    .clientService
+                                                                    .delete(
+                                                                        client),
+                                                                controller
+                                                                    .clients
+                                                                    .getData(),
+                                                                Get.back(),
+                                                                Get.back()
+                                                              },
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                      foregroundColor:
+                                                                          Colors
+                                                                              .red),
+                                                              child: const Text(
+                                                                  'Eliminar'),
+                                                            )
+                                                          ],
+                                                        )),
+                                                        editAction: () => {},
+                                                      ))
+                                                    })
+                                          },
                                           leading: CircleAvatar(
                                             backgroundColor: Theme.of(context)
                                                 .primaryColorLight,

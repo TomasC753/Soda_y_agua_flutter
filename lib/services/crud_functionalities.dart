@@ -35,7 +35,7 @@ class CrudFunctionalities<T extends Iideable> {
     return null;
   }
 
-  Future<T?> getById(int id) async {
+  Future<T> getById(int id) async {
     // if (dataBox != null && dataBox!.isNotEmpty) {
     //   return dataBox!.values.firstWhere((item) => item.id == id);
     // }
@@ -46,10 +46,10 @@ class CrudFunctionalities<T extends Iideable> {
       if (response.statusCode == 200) {
         return serializer(response.data);
       }
+      throw ('Error desconocido');
     } catch (e) {
       rethrow;
     }
-    return null;
   }
 
   update({required int id, required Map<String, dynamic> data}) async {

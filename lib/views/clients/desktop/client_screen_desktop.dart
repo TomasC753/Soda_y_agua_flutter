@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:soda_y_agua_flutter/utils/service_response.dart';
 import 'package:soda_y_agua_flutter/views/clients/controllers/client_controller.dart';
-// import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
+import 'package:soda_y_agua_flutter/views/clients/create_client_screen.dart';
 import 'package:soda_y_agua_flutter/widgets/MyNavigationRail.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
+// import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
+
+import '../show_client_screen.dart';
 
 class ClientScreenDesktop extends GetView<ClientController> {
   ClientScreenDesktop({Key? key}) : super(key: key);
@@ -17,6 +21,14 @@ class ClientScreenDesktop extends GetView<ClientController> {
   Widget build(BuildContext context) {
     return Scaffold(
         // drawer: const Drawer(child: MyDrawer()),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => Get.to(
+                () => CreateClientScreen(
+                    onFisnih: () => controller.clients.getData()),
+                fullscreenDialog: true,
+                transition: Transition.downToUp,
+                duration: const Duration(milliseconds: 250)),
+            child: const Icon(Icons.add)),
         appBar: AppBar(
           backgroundColor: Theme.of(context).dividerColor,
           elevation: 0,
@@ -45,7 +57,7 @@ class ClientScreenDesktop extends GetView<ClientController> {
                     Expanded(
                         child: Row(
                       children: [
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width / 3,
                           child: controller.clients.returnContentWhen(
                               onLoading: const Center(
@@ -82,6 +94,42 @@ class ClientScreenDesktop extends GetView<ClientController> {
                                                         vertical: 4),
                                                 child: Card(
                                                   child: ListTile(
+                                                    onTap: () => controller
+                                                        .getClient(client),
+                                                    onLongPress: () =>
+                                                        Get.dialog(AlertDialog(
+                                                      title: const Text(
+                                                          'Eliminar cliente'),
+                                                      icon: const Icon(
+                                                          Icons.warning),
+                                                      iconColor: Colors.orange,
+                                                      content: Text(
+                                                          '¿Estas seguro de que deseas eliminar a ${client.lastName} ${client.name}?'),
+                                                      actions: [
+                                                        TextButton(
+                                                            onPressed: () =>
+                                                                Get.back(),
+                                                            child: const Text(
+                                                                'Cancelar')),
+                                                        TextButton(
+                                                          onPressed: () => {
+                                                            controller
+                                                                .clientService
+                                                                .delete(client),
+                                                            controller.clients
+                                                                .getData(),
+                                                            Get.back()
+                                                          },
+                                                          style: TextButton
+                                                              .styleFrom(
+                                                                  foregroundColor:
+                                                                      Colors
+                                                                          .red),
+                                                          child: const Text(
+                                                              'Eliminar'),
+                                                        )
+                                                      ],
+                                                    )),
                                                     leading: CircleAvatar(
                                                       backgroundColor: Theme.of(
                                                               context)
@@ -154,19 +202,67 @@ class ClientScreenDesktop extends GetView<ClientController> {
                               )),
                         ),
                         Expanded(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/Logo_single.svg',
-                              width: 250,
-                            ),
-                            Text(
-                              'SODA Y AGUA',
-                              style: Theme.of(context).textTheme.displaySmall,
-                            )
-                          ],
-                        ))
+                            child: controller.selectedClient.returnContentWhen(
+                                onEmpty: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/Logo_single.svg',
+                                      width: 250,
+                                    ),
+                                    Text(
+                                      'SODA Y AGUA',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    )
+                                  ],
+                                ),
+                                onLoading: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                onError: Text(controller
+                                    .selectedClient.errorMessage.value),
+                                onSuccess: controller
+                                            .selectedClient.data.value !=
+                                        null
+                                    ? ShowClientScreen(
+                                        client: controller
+                                            .selectedClient.data.value!,
+                                        deleteACtion: () =>
+                                            Get.dialog(AlertDialog(
+                                              title: const Text(
+                                                  'Eliminar cliente'),
+                                              icon: const Icon(Icons.warning),
+                                              iconColor: Colors.orange,
+                                              content: Text(
+                                                  '¿Estas seguro de que deseas eliminar a ${controller.selectedClient.data.value!.lastName} ${controller.selectedClient.data.value!.name}?'),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () => Get.back(),
+                                                    child:
+                                                        const Text('Cancelar')),
+                                                TextButton(
+                                                  onPressed: () => {
+                                                    controller.clientService
+                                                        .delete(controller
+                                                            .selectedClient
+                                                            .data
+                                                            .value!),
+                                                    controller.clients
+                                                        .getData(),
+                                                    Get.back(),
+                                                    controller.selectedClient.status.value = OperationStatus.empty
+                                                  },
+                                                  style: TextButton.styleFrom(
+                                                      foregroundColor:
+                                                          Colors.red),
+                                                  child: const Text('Eliminar'),
+                                                )
+                                              ],
+                                            )),
+                                        editAction: () => {})
+                                    : const SizedBox()))
                       ],
                     )),
                   ],

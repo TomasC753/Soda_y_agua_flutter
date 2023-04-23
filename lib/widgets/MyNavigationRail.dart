@@ -14,7 +14,7 @@ class MyNavigationRailController extends GetxController {
   };
 
   void redirectTo(int index) {
-    Get.toNamed(pages[index] ?? '/dashboard');
+    Get.offAndToNamed(pages[index] ?? '/dashboard');
   }
 }
 
@@ -51,8 +51,9 @@ class MyNavigationRail extends GetView<MyNavigationRailController> {
             NavigationRailDestination(
                 icon: Icon(Icons.folder), label: Text('Boletas')),
           ],
-          selectedIndex: controller.pages.keys
-              .firstWhere((key) => controller.pages[key] == Get.currentRoute),
+          selectedIndex: controller.pages.keys.firstWhere(
+              (key) => controller.pages[key] == Get.currentRoute,
+              orElse: () => 0),
         ));
   }
 }

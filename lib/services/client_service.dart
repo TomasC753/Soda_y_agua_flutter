@@ -13,21 +13,6 @@ class ClientService {
 
   // Future<ServiceResponse<List<Client>>> getClients() async {
   Future<List<Client>> getClients() async {
-    // try {
-    //   var response = await crudFunctionalities.getAll();
-    //   if (response is List<Client>) {
-    //     return ServiceResponse<List<Client>>(
-    //       data: response,
-    //       status: RxStatus.success(),
-    //     );
-    //   }
-    //   return ServiceResponse(data: <Client>[], status: RxStatus.empty());
-    // } catch (e) {
-    //   return ServiceResponse(
-    //       data: <Client>[],
-    //       status: RxStatus.error(),
-    //       errorMessage: e.toString());
-    // }
     try {
       var response = await crudFunctionalities.getAll();
       if (response is List<Client>) {
@@ -37,6 +22,10 @@ class ClientService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> delete(Client client) async {
+    await crudFunctionalities.destroy(client.id);
   }
 
   // Future<ServiceResponse<Client?>> getClientById(int id) async {

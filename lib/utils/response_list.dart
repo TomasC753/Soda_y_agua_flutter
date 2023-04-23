@@ -11,7 +11,7 @@ class ResponseList<T> extends IServiceResponse<List<T>> {
       this.conditionsForSearch});
 
   @override
-  Future<void>? getData() async {
+  Future<void> getData({int? id, void Function(List<T>)? onSuccess}) async {
     try {
       status.value = OperationStatus.loading;
       List<T> dataObtained = await getterFunction();

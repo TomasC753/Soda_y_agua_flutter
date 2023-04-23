@@ -25,21 +25,21 @@ class Service implements Iideable {
     Service service = Service(
         id: json['id'],
         name: json['name'],
-        price: json['price'],
+        price: json['price'].toDouble(),
         pivot: json['pivot']);
 
     isFilled(
         json['clients'],
         () => {
               service.clients = relateMatrixToModel<Client>(
-                  data: json['clients'], serializerOfModel: Service.fromJson)
+                  data: json['clients'], serializerOfModel: Client.fromJson)
             });
 
     isFilled(
         json['products'],
         () => {
               service.products = relateMatrixToModel<Product>(
-                  data: json['products'], serializerOfModel: Service.fromJson)
+                  data: json['products'], serializerOfModel: Product.fromJson)
             });
 
     return service;

@@ -22,7 +22,7 @@ class Product implements Iideable {
   factory Product.fromJson(Map<String, dynamic> json) {
     Product product = Product(
         id: json['id'],
-        price: json['price'],
+        price: json['price'].toDouble(),
         name: json['name'],
         pivot: json['pivot']);
 
