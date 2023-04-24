@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:soda_y_agua_flutter/utils/service_response.dart';
+import 'package:soda_y_agua_flutter/widgets/CustomTextField.dart';
 
 part '_multiple_select_items_field.dart';
 part '_single_select_items_field.dart';
 part '_input_select_field.dart';
+part '_selectable_list.dart';
 
 class SelectItemsField {
-  static Widget single<T>(
-      {required Function<T>(T) onChanged,
-      InputDecoration? inputDecoration,
-      required TextEditingController controller,
-      required ResponseList<T> items}) {
+  static single<T>(
+      {T? defaultValue,
+      required TextEditingController textController,
+      required Function(T?) onChanged,
+      InputDecoration? decoration,
+      required List<SelectableList> items}) {
     return _InputSelectField(
-      textController: controller,
-      decoration: inputDecoration,
-      widgetConstructor: _SingleSelectItemsField<T>(
-        items: items,
-        textController: controller,
+      widgetConstructor: _SelectItemsSingle<T>(
+        defaultValue: defaultValue,
         onChanged: onChanged,
+        items: items,
+        textController: textController,
       ),
+      decoration: decoration,
+      textController: textController,
     );
   }
 
-  static Widget multiple<T>(
-      {required Function<T>(T) onChanged,
-      required TextEditingController controller,
-      InputDecoration? inputDecoration,
-      required ResponseList<T> items}) {
+  static multiple<T>(
+      {T? defaultValue,
+      required TextEditingController textController,
+      required Function(dynamic) onChanged,
+      InputDecoration? decoration,
+      required List<SelectableList> items}) {
     return _InputSelectField(
-      textController: controller,
-      decoration: inputDecoration,
-      widgetConstructor: _MultipleSelectItemsField<T>(),
+      widgetConstructor: _MultipleSelectItemsField<T>(
+        items: items,
+        onChanged: onChanged,
+        textController: textController,
+      ),
+      textController: textController,
+      decoration: decoration,
     );
   }
 }
