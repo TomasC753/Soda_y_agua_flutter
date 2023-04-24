@@ -165,7 +165,7 @@ class CreateClientScreen extends GetView<ClientCreateController> {
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onError))),
-                              onSuccess: SelectItemsField.single(
+                              onSuccess: SelectItemsField.single<int>(
                                   textController: controller.zoneController,
                                   onChanged: (value) =>
                                       controller.setZone(value),
