@@ -14,7 +14,7 @@ class CrudFunctionalities<T extends Iideable> {
       required this.pluralModelName,
       required this.serializer});
 
-  Future<List<T>?> getAll() async {
+  Future<List<T>> getAll() async {
     // dataBox ??= await Hive.openBox<T>(pluralModelName);
     // if (dataBox!.isNotEmpty) {
     //   return dataBox!.values.toList();
@@ -29,10 +29,10 @@ class CrudFunctionalities<T extends Iideable> {
         // await dataBox!.addAll(list);
         return list;
       }
+      throw ('Error desconocido');
     } catch (e) {
       rethrow;
     }
-    return null;
   }
 
   Future<T> getById(int id) async {
