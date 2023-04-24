@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:soda_y_agua_flutter/views/sales/controllers/sale_creator_controller.dart';
 import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
 import 'package:soda_y_agua_flutter/widgets/MyNavigationRail.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
 
 import 'controllers/sale_controller.dart';
+import 'create_and_edit_sale_screen.dart';
 
 class SalesScreen extends GetView<SaleController> {
   SalesScreen({Key? key}) : super(key: key);
@@ -14,13 +16,20 @@ class SalesScreen extends GetView<SaleController> {
   @override
   final controller = Get.put(SaleController());
 
-  @override
   var tableScrollController = ScrollController();
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => Get.to(
+                () => CreateAndEditSaleScreen(
+                      onFinish: () => controller.sales.getData(),
+                    ),
+                fullscreenDialog: true,
+                transition: Transition.downToUp,
+                duration: const Duration(milliseconds: 250))
+            ?.then((value) => Get.delete<SaleCreateController>()),
         child: const Icon(Icons.add),
       ),
       drawer: MediaQuery.of(context).size.width < 1024
@@ -148,7 +157,8 @@ class SalesScreen extends GetView<SaleController> {
                                                                         'Cancelar')),
                                                                 TextButton(
                                                                   onPressed:
-                                                                      () => {},
+                                                                      () => sale
+                                                                          .delete(),
                                                                   style: TextButton.styleFrom(
                                                                       foregroundColor:
                                                                           Colors
@@ -160,7 +170,27 @@ class SalesScreen extends GetView<SaleController> {
                                                             )),
                                                           ),
                                                           IconButton(
-                                                            onPressed: () => {},
+                                                            onPressed: () => Get
+                                                                    .to(
+                                                                        CreateAndEditSaleScreen(
+                                                                          onFinish: () => controller
+                                                                              .sales
+                                                                              .getData(id: sale.id),
+                                                                          client:
+                                                                              sale.client,
+                                                                          sale:
+                                                                              sale,
+                                                                        ),
+                                                                        fullscreenDialog:
+                                                                            true,
+                                                                        transition: Transition
+                                                                            .downToUp,
+                                                                        duration: const Duration(
+                                                                            milliseconds:
+                                                                                250))
+                                                                ?.then((value) =>
+                                                                    Get.delete<
+                                                                        SaleCreateController>()),
                                                             icon: const Icon(
                                                                 Icons.edit),
                                                             color: Theme.of(
@@ -175,7 +205,7 @@ class SalesScreen extends GetView<SaleController> {
                                                       DataCell(
                                                           sale.paidState == 1
                                                               ? Row(
-                                                                  children: [
+                                                                  children: const [
                                                                     Icon(
                                                                       Icons
                                                                           .check_circle,
@@ -190,11 +220,21 @@ class SalesScreen extends GetView<SaleController> {
                                                                     ),
                                                                   ],
                                                                 )
-                                                              : const Text(
-                                                                  'No esta pagado',
-                                                                  style: TextStyle(
+                                                              : Row(
+                                                                  children: const [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .gpp_bad_rounded,
                                                                       color: Colors
-                                                                          .red),
+                                                                          .red,
+                                                                    ),
+                                                                    Text(
+                                                                      'No esta pagado',
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.red),
+                                                                    ),
+                                                                  ],
                                                                 )),
                                                       DataCell(
                                                           sale.paidState == 1
