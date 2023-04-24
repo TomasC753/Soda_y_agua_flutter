@@ -1,3 +1,4 @@
+import 'package:soda_y_agua_flutter/services/crud_functionalities.dart';
 import 'package:soda_y_agua_flutter/utils/IsFilled.dart';
 import 'package:soda_y_agua_flutter/utils/modelMatcher.dart';
 
@@ -13,6 +14,12 @@ class Service implements Iideable {
   List<Client>? clients;
   List<Product>? products;
   Map? pivot;
+
+  static CrudFunctionalities<Service> crudFunctionalities =
+      CrudFunctionalities<Service>(
+          modelName: 'service',
+          pluralModelName: 'services',
+          serializer: Service.fromJson);
 
   Service(
       {required this.id,

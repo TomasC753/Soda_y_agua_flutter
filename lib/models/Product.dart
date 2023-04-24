@@ -1,6 +1,7 @@
 import 'package:soda_y_agua_flutter/utils/IsFilled.dart';
 import 'package:soda_y_agua_flutter/utils/modelMatcher.dart';
 
+import '../services/crud_functionalities.dart';
 import 'Service.dart';
 import 'ideable.dart';
 
@@ -11,6 +12,12 @@ class Product implements Iideable {
   double price;
   List<Service>? services;
   Map? pivot;
+
+  static CrudFunctionalities<Product> crudFunctionalities =
+      CrudFunctionalities<Product>(
+          modelName: 'product',
+          pluralModelName: 'products',
+          serializer: Product.fromJson);
 
   Product(
       {required this.id,
