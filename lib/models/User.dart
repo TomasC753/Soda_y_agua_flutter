@@ -1,3 +1,4 @@
+import 'package:soda_y_agua_flutter/services/crud_functionalities.dart';
 import 'package:soda_y_agua_flutter/utils/IsFilled.dart';
 import 'package:soda_y_agua_flutter/utils/modelMatcher.dart';
 
@@ -18,6 +19,12 @@ class User implements Iideable {
   List<Sale>? sales;
   List<Consumption>? consumptions;
   Map? pivot;
+
+  static CrudFunctionalities<User> crudFunctionalities =
+      CrudFunctionalities<User>(
+          modelName: 'user',
+          pluralModelName: 'users',
+          serializer: User.fromJson);
 
   User(
       {required this.id,
