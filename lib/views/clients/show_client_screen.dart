@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:soda_y_agua_flutter/models/Client.dart';
-import 'package:soda_y_agua_flutter/utils/service_response.dart';
 import 'package:soda_y_agua_flutter/widgets/GradientElevatedButton.dart';
 
 class ShowClientScreen extends StatelessWidget {
@@ -69,20 +67,34 @@ class ShowClientScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.greenAccent,
-                child: Row(
-                  children: [
-                    Icon(Icons.check_circle),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                        '${client.lastName} ${client.name} esta al dia con sus pagos'),
-                  ],
-                ),
-              ),
+              child: client.debtState == 0
+                  ? Container(
+                      padding: const EdgeInsets.all(8),
+                      color: Colors.greenAccent,
+                      child: Row(
+                        children: [
+                          Icon(Icons.check_circle),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                              '${client.lastName} ${client.name} esta al dia con sus pagos'),
+                        ],
+                      ),
+                    )
+                  : Container(
+                      padding: const EdgeInsets.all(8),
+                      color: Theme.of(context).colorScheme.errorContainer,
+                      child: Row(
+                        children: [
+                          Icon(Icons.gpp_bad),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                              '${client.lastName} ${client.name} no esta al dia con sus pagos'),
+                        ],
+                      )),
             ),
             SliverToBoxAdapter(
               child: Padding(

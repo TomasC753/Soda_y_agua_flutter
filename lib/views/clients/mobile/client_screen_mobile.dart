@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soda_y_agua_flutter/models/Client.dart';
 import 'package:soda_y_agua_flutter/utils/service_response.dart';
 import 'package:soda_y_agua_flutter/views/clients/show_client_screen.dart';
 import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
@@ -88,8 +89,8 @@ class ClientScreenMobile extends GetView<ClientController> {
                                                       const Text('Cancelar')),
                                               TextButton(
                                                 onPressed: () => {
-                                                  controller.clientService
-                                                      .delete(client),
+                                                  Client.crudFunctionalities
+                                                      .destroy(client.id),
                                                   controller.clients.getData(),
                                                   Get.back()
                                                 },
@@ -133,10 +134,11 @@ class ClientScreenMobile extends GetView<ClientController> {
                                                                     'Cancelar')),
                                                             TextButton(
                                                               onPressed: () => {
-                                                                controller
-                                                                    .clientService
-                                                                    .delete(
-                                                                        client),
+                                                                Client
+                                                                    .crudFunctionalities
+                                                                    .destroy(
+                                                                        client
+                                                                            .id),
                                                                 controller
                                                                     .clients
                                                                     .getData(),
@@ -185,27 +187,12 @@ class ClientScreenMobile extends GetView<ClientController> {
                                                         .fontSize))
                                           ])),
                                           trailing: client.debtState == 0
-                                              ? Icon(Icons.monetization_on,
-                                                  color:
-                                                      Colors.greenAccent[400])
-                                              : Container(
-                                                  padding:
-                                                      const EdgeInsets.all(1),
-                                                  decoration: BoxDecoration(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .error,
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  20))),
-                                                  child: Icon(
-                                                    Icons.money_off,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onError,
-                                                  )),
+                                              ? const Icon(Icons.check_circle,
+                                                  color: Colors.greenAccent)
+                                              : const Icon(
+                                                  Icons.gpp_bad,
+                                                  color: Colors.red,
+                                                ),
                                         ),
                                       ),
                                     ))

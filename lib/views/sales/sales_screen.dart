@@ -157,8 +157,13 @@ class SalesScreen extends GetView<SaleController> {
                                                                         'Cancelar')),
                                                                 TextButton(
                                                                   onPressed:
-                                                                      () => sale
-                                                                          .delete(),
+                                                                      () => {
+                                                                    sale.delete(),
+                                                                    controller
+                                                                        .sales
+                                                                        .getData(),
+                                                                    Get.back()
+                                                                  },
                                                                   style: TextButton.styleFrom(
                                                                       foregroundColor:
                                                                           Colors

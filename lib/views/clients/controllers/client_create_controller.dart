@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soda_y_agua_flutter/models/Client.dart';
 import 'package:soda_y_agua_flutter/models/Service.dart';
 import 'package:soda_y_agua_flutter/models/Zone.dart';
-import 'package:soda_y_agua_flutter/services/client_service.dart';
-import 'package:soda_y_agua_flutter/services/service_service.dart';
 import 'package:soda_y_agua_flutter/services/user_service.dart';
-import 'package:soda_y_agua_flutter/services/zone_service.dart';
 import 'package:soda_y_agua_flutter/utils/service_response.dart';
 
 class ClientCreateController extends GetxController {
@@ -15,12 +12,14 @@ class ClientCreateController extends GetxController {
   late Function() onFinish;
   ResponseList<Zone> zones = ResponseList<Zone>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async => await ZoneService().getZones(),
+      getterFunction: ({int? id}) async =>
+          await Zone.crudFunctionalities.getAll(),
       data: <Zone>[]);
 
   ResponseList<Service> services = ResponseList<Service>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async => await ServiceService().getServices(),
+      getterFunction: ({int? id}) async =>
+          await Service.crudFunctionalities.getAll(),
       data: <Service>[]);
 
   var nameController = TextEditingController();
@@ -82,7 +81,7 @@ class ClientCreateController extends GetxController {
     if (!validate()) {
       return;
     }
-    ClientService.crudFunctionalities.store({
+    Client.crudFunctionalities.store({
       "user_id": Get.find<UserService>().user.id,
       "name": nameController.text,
       "last_name": lastNameController.text,
@@ -99,7 +98,6 @@ class ClientCreateController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     zones.getData();
     services.getData();

@@ -1,17 +1,15 @@
 import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/Client.dart';
 import 'package:soda_y_agua_flutter/models/Zone.dart';
-import 'package:soda_y_agua_flutter/services/client_service.dart';
 import 'package:soda_y_agua_flutter/utils/service_response.dart';
 
 class ClientController extends GetxController {
-  final clientService = ClientService();
   var isLoading = false.obs;
 
   ResponseList<Client> clients = ResponseList<Client>(
       data: <Client>[].obs,
       status: Rxn<OperationStatus>(OperationStatus.empty),
-      getterFunction: ({int? id}) async => ClientService().getClients(),
+      getterFunction: ({int? id}) async => Client.crudFunctionalities.getAll(),
       conditionsForSearch: (client, query) =>
           (client.name.toLowerCase().contains(query) ||
               client.lastName.toLowerCase().contains(query)));
@@ -19,7 +17,7 @@ class ClientController extends GetxController {
   ResponseGeneric<Client> selectedClient = ResponseGeneric<Client>(
     data: Rxn<Client>(),
     getterFunction: ({int? id}) async =>
-        await ClientService.crudFunctionalities.getById(id!),
+        await Client.crudFunctionalities.getById(id!),
     status: Rxn<OperationStatus>(OperationStatus.empty),
   );
 
