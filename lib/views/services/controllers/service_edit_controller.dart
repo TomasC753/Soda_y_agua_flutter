@@ -11,6 +11,8 @@ class ServiceEditController extends GetxController {
   late Service service;
   late Function() onFinish;
 
+  var isLoading = false.obs;
+
   ResponseList<Product> products = ResponseList<Product>(
       status: Rxn(OperationStatus.empty),
       getterFunction: ({int? id}) async =>

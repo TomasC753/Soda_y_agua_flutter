@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class MyNavigationRailController extends GetxController {
   var expanded = false.obs;
+  var currentRoute = Get.currentRoute;
   Map<int, String> pages = {
     0: '/dashboard',
     1: '/clients',
@@ -52,7 +53,7 @@ class MyNavigationRail extends GetView<MyNavigationRailController> {
                 icon: Icon(Icons.folder), label: Text('Boletas')),
           ],
           selectedIndex: controller.pages.keys.firstWhere(
-              (key) => controller.pages[key] == Get.currentRoute,
+              (key) => controller.pages[key] == controller.currentRoute,
               orElse: () => 0),
         ));
   }
