@@ -19,6 +19,7 @@ class ResponseList<T> extends IServiceResponse<List<T>> {
       printedData.value = dataObtained;
       if (dataObtained.isNotEmpty) {
         status.value = OperationStatus.success;
+        onSuccess?.call(dataObtained);
       } else {
         status.value = OperationStatus.empty;
       }
