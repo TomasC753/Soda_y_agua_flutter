@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/Client.dart';
 import 'package:soda_y_agua_flutter/widgets/GradientElevatedButton.dart';
+
+import 'consumption/consumption_screen.dart';
+import 'consumption/controllers/consumption_controller.dart';
 
 class ShowClientScreen extends StatelessWidget {
   Client client;
@@ -16,6 +20,7 @@ class ShowClientScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var serviceScrollController = ScrollController();
+    var salesTableScrollController = ScrollController();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).cardColor,
@@ -173,7 +178,26 @@ class ShowClientScreen extends StatelessWidget {
                                                   height: 8,
                                                 ),
                                                 GradientElevatedButton(
-                                                    onPressed: () => {},
+                                                    onPressed: () => Get.to(
+                                                            () =>
+                                                                ConsumptionScreen(
+                                                                  client:
+                                                                      client,
+                                                                  service:
+                                                                      service,
+                                                                ),
+                                                            fullscreenDialog:
+                                                                true,
+                                                            transition:
+                                                                Transition
+                                                                    .downToUp,
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        250))
+                                                        ?.then((value) =>
+                                                            Get.delete<
+                                                                ConsumptionScreen>()),
                                                     borderRadius:
                                                         const BorderRadius.all(
                                                             Radius.circular(
@@ -218,9 +242,119 @@ class ShowClientScreen extends StatelessWidget {
                   Card(
                     // TODO: compras del cliente en el ultimo mes
                     child: Container(
-                      height: 300,
                       padding: const EdgeInsets.all(16),
-                      child: const Center(child: Text('En construccion')),
+                      child: client.purchases != null
+                          ? Scrollbar(
+                              controller: salesTableScrollController,
+                              child: SingleChildScrollView(
+                                controller: salesTableScrollController,
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                    columns: const <DataColumn>[
+                                      DataColumn(label: Text('Estado')),
+                                      DataColumn(label: Text('Debe')),
+                                      DataColumn(label: Text('Fecha')),
+                                      DataColumn(label: Text('Productos')),
+                                      DataColumn(
+                                          label: Text('Descuento Total')),
+                                      DataColumn(label: Text('Total')),
+                                      DataColumn(label: Text('Entregado')),
+                                    ],
+                                    rows: client.purchases!
+                                        .map((sale) =>
+                                            DataRow(cells: <DataCell>[
+                                              DataCell(sale.paidState == 1
+                                                  ? Row(
+                                                      children: const [
+                                                        Icon(
+                                                          Icons.check_circle,
+                                                          color: Colors
+                                                              .greenAccent,
+                                                        ),
+                                                        Text(
+                                                          'Pagado',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .greenAccent),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : Row(
+                                                      children: const [
+                                                        Icon(
+                                                          Icons.gpp_bad_rounded,
+                                                          color: Colors.red,
+                                                        ),
+                                                        Text(
+                                                          'No esta pagado',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.red),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              DataCell(sale.paidState == 1
+                                                  ? const Text(
+                                                      'Nada',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .greenAccent),
+                                                    )
+                                                  : Text(
+                                                      '\$${sale.total - sale.moneyDelivered}',
+                                                      style: const TextStyle(
+                                                          color: Colors.red),
+                                                    )),
+                                              DataCell(Text(sale.date)),
+                                              DataCell(Column(
+                                                children: sale.products
+                                                        ?.map((product) =>
+                                                            RichText(
+                                                                text: TextSpan(
+                                                                    children: [
+                                                                  TextSpan(
+                                                                      text:
+                                                                          '• ${product.name}: '),
+                                                                  TextSpan(
+                                                                      text:
+                                                                          '\$${product.pivot?["price_sold"]} ',
+                                                                      style: const TextStyle(
+                                                                          color:
+                                                                              Colors.greenAccent)),
+                                                                  TextSpan(
+                                                                      text:
+                                                                          'x ${product.pivot?["quantity"]}')
+                                                                ],
+                                                                    style: TextStyle(
+                                                                        color: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .onSurface))))
+                                                        .toList() ??
+                                                    const [
+                                                      Text(
+                                                          'No hay productos registrados')
+                                                    ],
+                                              )),
+                                              DataCell(Text(
+                                                  '%${sale.totalDiscount}',
+                                                  style: const TextStyle(
+                                                      color: Colors.red))),
+                                              DataCell(Text('\$${sale.total}',
+                                                  style: const TextStyle(
+                                                      color:
+                                                          Colors.greenAccent))),
+                                              DataCell(Text(
+                                                  '\$${sale.moneyDelivered}',
+                                                  style: const TextStyle(
+                                                      color:
+                                                          Colors.greenAccent))),
+                                            ]))
+                                        .toList()),
+                              ),
+                            )
+                          : const Center(
+                              child:
+                                  Text('Este cliente no tiene compras hechas')),
                     ),
                   )
                 ],

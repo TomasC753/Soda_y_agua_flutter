@@ -137,7 +137,10 @@ class CreateAndEditSaleScreen extends GetView<SaleCreateController> {
                                               '${client.lastName} ${client.name}'))
                                       .toList(),
                                   onChanged: (id) => controller.selectedClient
-                                      .getData(id: id)),
+                                      .getData(
+                                          id: id,
+                                          onSuccess: (client) => controller
+                                              .checkConsumptions(client))),
                             ),
                             const SizedBox(
                               height: 16,
@@ -162,69 +165,95 @@ class CreateAndEditSaleScreen extends GetView<SaleCreateController> {
                                             .onErrorContainer),
                                   ),
                                 ),
-                                onSuccess: Scrollbar(
-                                  controller: scrollController,
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    controller: scrollController,
-                                    child: DataTable(
-                                        border: TableBorder(
-                                          top: BorderSide(color: dividerColor),
-                                          left: BorderSide(color: dividerColor),
-                                          right:
-                                              BorderSide(color: dividerColor),
-                                          bottom:
-                                              BorderSide(color: dividerColor),
-                                          verticalInside:
-                                              BorderSide(color: dividerColor),
-                                          horizontalInside:
-                                              BorderSide(color: dividerColor),
-                                        ),
-                                        columns: const [
-                                          DataColumn(label: Text('Estado')),
-                                          DataColumn(label: Text('Producto')),
-                                          DataColumn(label: Text('Precio')),
-                                          DataColumn(label: Text('Cobro')),
-                                          DataColumn(label: Text('Cantidad')),
-                                          DataColumn(label: Text('Descuento')),
-                                          DataColumn(label: Text('Total')),
-                                        ],
-                                        rows: controller.products.printedData
-                                            .map((product) => DataRow(
-                                                    color: controller
-                                                                    .productSelection[
-                                                                product.id] !=
-                                                            null
-                                                        ? MaterialStatePropertyAll(
-                                                            Theme.of(context)
-                                                                .cardColor)
-                                                        : MaterialStatePropertyAll(
-                                                            Theme.of(context)
-                                                                .disabledColor),
-                                                    cells: [
-                                                      DataCell(Switch(
-                                                          value: controller
+                                onSuccess: Column(
+                                  children: [
+                                    if (controller
+                                        .productsLimitWarning.isNotEmpty)
+                                      Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.all(12),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .errorContainer,
+                                          child: Column(
+                                            children: controller
+                                                .productsLimitWarning
+                                                .map((warning) => Text(warning))
+                                                .toList(),
+                                          )),
+                                    Scrollbar(
+                                      controller: scrollController,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        controller: scrollController,
+                                        child: DataTable(
+                                            border: TableBorder(
+                                              top: BorderSide(
+                                                  color: dividerColor),
+                                              left: BorderSide(
+                                                  color: dividerColor),
+                                              right: BorderSide(
+                                                  color: dividerColor),
+                                              bottom: BorderSide(
+                                                  color: dividerColor),
+                                              verticalInside: BorderSide(
+                                                  color: dividerColor),
+                                              horizontalInside: BorderSide(
+                                                  color: dividerColor),
+                                            ),
+                                            columns: const [
+                                              DataColumn(label: Text('Estado')),
+                                              DataColumn(
+                                                  label: Text('Producto')),
+                                              DataColumn(label: Text('Precio')),
+                                              DataColumn(label: Text('Cobro')),
+                                              DataColumn(
+                                                  label: Text('Cantidad')),
+                                              DataColumn(
+                                                  label: Text('Descuento')),
+                                              DataColumn(label: Text('Total')),
+                                            ],
+                                            rows: controller
+                                                .products.printedData
+                                                .map((product) => DataRow(
+                                                        color: controller
+                                                                        .productSelection[
+                                                                    product
+                                                                        .id] !=
+                                                                null
+                                                            ? MaterialStatePropertyAll(
+                                                                Theme.of(
+                                                                        context)
+                                                                    .cardColor)
+                                                            : MaterialStatePropertyAll(
+                                                                Theme.of(
+                                                                        context)
+                                                                    .disabledColor),
+                                                        cells: [
+                                                          DataCell(Switch(
+                                                              value: controller
+                                                                              .productSelection[
+                                                                          product
+                                                                              .id] !=
+                                                                      null
+                                                                  ? true
+                                                                  : false,
+                                                              onChanged: (value) =>
+                                                                  controller
+                                                                      .changeStateProduct(
+                                                                          product,
+                                                                          value))),
+                                                          DataCell(Text(
+                                                              product.name)),
+                                                          DataCell(Text(
+                                                            '\$${controller.selectedClient.data.value?.productPrices?.firstWhereOrNull((loopProduct) => loopProduct.productId == product.id)?.price ?? product.price}',
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .green),
+                                                          )),
+                                                          DataCell(controller
                                                                           .productSelection[
-                                                                      product
-                                                                          .id] !=
-                                                                  null
-                                                              ? true
-                                                              : false,
-                                                          onChanged: (value) =>
-                                                              controller
-                                                                  .changeStateProduct(
-                                                                      product,
-                                                                      value))),
-                                                      DataCell(
-                                                          Text(product.name)),
-                                                      DataCell(Text(
-                                                        '\$${controller.selectedClient.data.value?.productPrices?.firstWhereOrNull((loopProduct) => loopProduct.productId == product.id)?.price ?? product.price}',
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Colors.green),
-                                                      )),
-                                                      DataCell(
-                                                          controller.productSelection[
                                                                       product
                                                                           .id] !=
                                                                   null
@@ -244,8 +273,8 @@ class CreateAndEditSaleScreen extends GetView<SaleCreateController> {
                                                                 )
                                                               : const Text(
                                                                   '\$0')),
-                                                      DataCell(
-                                                          controller.productSelection[
+                                                          DataCell(controller
+                                                                          .productSelection[
                                                                       product
                                                                           .id] !=
                                                                   null
@@ -262,8 +291,8 @@ class CreateAndEditSaleScreen extends GetView<SaleCreateController> {
                                                                 )
                                                               : const Text(
                                                                   '0')),
-                                                      DataCell(
-                                                          controller.productSelection[
+                                                          DataCell(controller
+                                                                          .productSelection[
                                                                       product
                                                                           .id] !=
                                                                   null
@@ -283,11 +312,13 @@ class CreateAndEditSaleScreen extends GetView<SaleCreateController> {
                                                                 )
                                                               : const Text(
                                                                   '%0')),
-                                                      DataCell(Text(
-                                                          '\$${controller.productSelection[product.id]?["total"] ?? 0}')),
-                                                    ]))
-                                            .toList()),
-                                  ),
+                                                          DataCell(Text(
+                                                              '\$${controller.productSelection[product.id]?["total"] ?? 0}')),
+                                                        ]))
+                                                .toList()),
+                                      ),
+                                    ),
+                                  ],
                                 )),
                             // const SizedBox(
                             //   height: 16,

@@ -56,8 +56,20 @@ class SaleCreateController extends GetxController {
   var clientError = ''.obs;
   var productSelectionError = ''.obs;
 
+  var productsLimitWarning = <String>[].obs;
+
   double get debt {
     return total.value - moneyDelivered.value;
+  }
+
+  void checkConsumptions(Client client) {
+    productsLimitWarning.clear();
+    client.limitsAndConsumptions?['consumptions']?.forEach((key, value) {
+      if (value < (client.limitsAndConsumptions?['limits']?[key] ?? 0)) {
+        productsLimitWarning.add(
+            "- ${client.lastName} ${client.name} todavia no realizó todos los consumos disponibles para (${products.data.firstWhereOrNull((product) => product.id == int.parse(key))?.name})");
+      }
+    });
   }
 
   void setMoneyDelivered(String value) {
