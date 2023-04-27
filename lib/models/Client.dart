@@ -1,11 +1,13 @@
 // import 'package:hive_flutter/hive_flutter.dart';
-import 'package:get/get.dart';
+import 'dart:convert';
+
 import 'package:soda_y_agua_flutter/models/ideable.dart';
 import 'package:soda_y_agua_flutter/services/crud_functionalities.dart';
 import 'package:soda_y_agua_flutter/utils/IsFilled.dart';
 import 'package:soda_y_agua_flutter/utils/modelMatcher.dart';
 
 import 'Consumption.dart';
+import 'Sale.dart';
 import 'Service.dart';
 import 'Zone.dart';
 
@@ -22,10 +24,9 @@ class Client implements Iideable {
   List<Service>? services;
   List<Consumption>? consumptions;
   List<ProductPrice>? productPrices;
-  Map<int, List<Consumption>>? consumptionGroupedByServiceId;
-  // ignore: non_constant_identifier_names
-  RxMap<int, List<Consumption>> obs_consumptionGroupedByServiceId =
-      RxMap<int, List<Consumption>>({});
+  Map<String, Map<String, int>>? limitsAndConsumptions =
+      <String, Map<String, int>>{};
+  List<Sale>? purchases;
   Zone? zone;
   Map? pivot;
 
@@ -42,24 +43,25 @@ class Client implements Iideable {
       required this.domicile,
       this.phoneNumber,
       this.clientNumber,
+      this.limitsAndConsumptions,
       this.debtState = 0,
       this.pivot,
       required this.zoneId});
 
-  Map<int, List<Consumption>>? groupConsumptionByServiceId() {
-    if (consumptions != null) {
-      Map<int, List<Consumption>> matrix = {};
-      for (var consumption in consumptions!) {
-        if (matrix[consumption.serviceId] == null) {
-          matrix[consumption.serviceId] = [consumption];
-          continue;
-        }
-        matrix[consumption.serviceId]!.add(consumption);
-      }
-      return matrix;
-    }
-    return null;
-  }
+  // Map<int, List<Consumption>>? groupConsumptionByServiceId() {
+  //   if (consumptions != null) {
+  //     Map<int, List<Consumption>> matrix = {};
+  //     for (var consumption in consumptions!) {
+  //       if (matrix[consumption.serviceId] == null) {
+  //         matrix[consumption.serviceId] = [consumption];
+  //         continue;
+  //       }
+  //       matrix[consumption.serviceId]!.add(consumption);
+  //     }
+  //     return matrix;
+  //   }
+  //   return null;
+  // }
 
   factory Client.fromJson(Map<String, dynamic> json) {
     Client client = Client(
@@ -85,20 +87,60 @@ class Client implements Iideable {
         () => client.zone = relateToModel<Zone>(
             data: json['zone'], serializerOfModel: Zone.fromJson));
 
-    Map<int, List<Consumption>>? groupedConsumptions;
     isFilled(
         json['last_month_consumptions'],
         () => {
               client.consumptions = relateMatrixToModel<Consumption>(
                   data: json['last_month_consumptions'],
                   serializerOfModel: Consumption.fromJson),
-              groupedConsumptions = client.groupConsumptionByServiceId(),
-              client.consumptionGroupedByServiceId = groupedConsumptions,
-              client.obs_consumptionGroupedByServiceId.value =
-                  groupedConsumptions ?? {}
+            });
+
+    isFilled(
+        json['discount_products'],
+        () => {
+              client.productPrices = relateMatrixToModel<ProductPrice>(
+                  data: json['discount_products'],
+                  serializerOfModel: ProductPrice.fromJson)
+            });
+
+    isFilled(
+        json['purchases'],
+        () => {
+              client.purchases = relateMatrixToModel<Sale>(
+                  data: json['purchases'], serializerOfModel: Sale.fromJson)
+            });
+
+    late Map<String, dynamic> limitsAndConsumptions;
+    late Map<String, dynamic> consumptions;
+    late Map<String, dynamic> limits;
+    isFilled(
+        json['limits_and_consumptions'],
+        () => {
+              limitsAndConsumptions = json['limits_and_consumptions'],
+              consumptions = limitsAndConsumptions['consumptions'],
+              limits = limitsAndConsumptions['limits'],
+              client.limitsAndConsumptions = <String, Map<String, int>>{},
+              client.limitsAndConsumptions!['consumptions'] =
+                  consumptions.map((key, value) => MapEntry(key, value as int)),
+              client.limitsAndConsumptions!['limits'] =
+                  limits.map((key, value) => MapEntry(key, value as int))
             });
 
     return client;
+  }
+
+  Future<void> addConsumption(
+      {required int serviceId,
+      required int productId,
+      required int quantity,
+      required String dateTime}) async {
+    await Consumption.crudFunctionalities.store({
+      'client_id': id,
+      'service_id': serviceId,
+      'product_id': productId,
+      'quantity': quantity,
+      'date': dateTime,
+    });
   }
 }
 
@@ -114,12 +156,12 @@ class ProductPrice {
       required this.price,
       required this.quantity});
 
-  static serializer(Map data) {
+  factory ProductPrice.fromJson(Map<String, dynamic> json) {
     return ProductPrice(
-      productId: data['product_id'],
-      serviceId: data['service_id'],
-      price: data['price'].toDouble(),
-      quantity: data['count'],
+      productId: json['product_id'],
+      serviceId: json['service_id'],
+      price: json['price'].toDouble(),
+      quantity: json['count'],
     );
   }
 }
