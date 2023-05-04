@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/Zone.dart';
 import 'package:soda_y_agua_flutter/widgets/CustomTextField.dart';
 import 'package:soda_y_agua_flutter/widgets/GradientElevatedButton.dart';
+import 'package:soda_y_agua_flutter/widgets/Logos/logo.dart';
 
 import 'controllers/zone_create_controller.dart';
 
@@ -29,8 +29,8 @@ class ZoneCreateAndEditScreen extends GetView<ZoneCreateController> {
         title: Row(
           children: [
             Center(
-              child: SvgPicture.asset(
-                'assets/logo_single.svg',
+              child: Logo(
+                type: LogoType.shield,
                 width: 45,
               ),
             ),
@@ -50,19 +50,10 @@ class ZoneCreateAndEditScreen extends GetView<ZoneCreateController> {
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/Logo_single.svg',
-                          width: 100,
-                        ),
-                        Text(
-                          'Soda y Agua',
-                          style: Theme.of(context).textTheme.displaySmall,
-                        )
-                      ],
+                    Logo(
+                      type: LogoType.compactOneColor,
+                      color: Theme.of(context).colorScheme.onBackground,
+                      width: 225,
                     ),
                     const SizedBox(
                       height: 26,

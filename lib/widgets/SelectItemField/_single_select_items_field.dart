@@ -6,6 +6,7 @@ class _SelectItemsSingleController<T> extends GetxController {
   // RxList<RadioListTile> radioItems = <RadioListTile>[].obs;
   List<RadioListTile> radioItems = [];
   RxList<RadioListTile> printedRadioItems = <RadioListTile>[].obs;
+  Rxn<SelectableList> selectedItem = Rxn<SelectableList>();
   late TextEditingController textController;
 
   void loadItems(Function onChanged) async {
@@ -15,6 +16,7 @@ class _SelectItemsSingleController<T> extends GetxController {
             title: Text(item.title),
             subtitle: item.subtitle != null ? Text(item.subtitle!) : null,
             value: item.value,
+            selected: item.value == selectedItem.value?.value,
             groupValue: 'items',
             onChanged: (value) => change(value, onChanged)))
         .toList();
@@ -43,8 +45,8 @@ class _SelectItemsSingleController<T> extends GetxController {
 
 class _SelectItemsSingle<T> extends GetView<_SelectItemsSingleController> {
   InputDecoration? decoration;
-  T? defaultValue;
   TextEditingController textController;
+  SelectableList? selectedItem;
   List<SelectableList> items;
   Function(T?) onChanged;
 
@@ -55,7 +57,7 @@ class _SelectItemsSingle<T> extends GetView<_SelectItemsSingleController> {
   _SelectItemsSingle(
       {Key? key,
       this.decoration,
-      this.defaultValue,
+      this.selectedItem,
       required this.onChanged,
       required this.items,
       required this.textController})
@@ -64,6 +66,9 @@ class _SelectItemsSingle<T> extends GetView<_SelectItemsSingleController> {
   @override
   Widget build(BuildContext context) {
     controller.items = items;
+    if (selectedItem != null) {
+      controller.selectedItem.value = selectedItem;
+    }
     controller.loadItems(onChanged);
     controller.textController = textController;
     return Obx(

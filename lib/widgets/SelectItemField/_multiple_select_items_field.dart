@@ -14,10 +14,10 @@ class _SelectItemsMultipleController<T> extends GetxController {
   void change(
       bool state, SelectableList item, Function(List<dynamic>) onChanged) {
     //
-    if (!checkedItems.contains(item)) {
+    if (!checkedItems.any((element) => element.value == item.value)) {
       checkedItems.add(item);
     } else {
-      checkedItems.remove(item);
+      checkedItems.removeWhere((element) => element.value == item.value);
     }
 
     textController.text = checkedItems.map((item) => item.title).toString();
@@ -42,11 +42,13 @@ class _MultipleSelectItemsField<T>
   T? defaultValue;
   TextEditingController textController;
   List<SelectableList> items;
+  List<SelectableList>? checkedItems;
   Function(dynamic) onChanged;
   _MultipleSelectItemsField(
       {Key? key,
       this.decoration,
       this.defaultValue,
+      this.checkedItems,
       required this.items,
       required this.onChanged,
       required this.textController})
@@ -60,6 +62,9 @@ class _MultipleSelectItemsField<T>
     controller.items = items;
     controller.loadItems(onChanged);
     controller.textController = textController;
+    if (checkedItems != null) {
+      controller.checkedItems.value = checkedItems!;
+    }
     return Obx(
       () => Scaffold(
         body: !controller.isLoading.value
@@ -86,7 +91,8 @@ class _MultipleSelectItemsField<T>
                           .map((item) => CheckboxListTile(
                               title: Text(item.title),
                               subtitle: Text(item.subtitle ?? ''),
-                              value: controller.checkedItems.contains(item),
+                              value: controller.checkedItems
+                                  .any((e) => e.value == item.value),
                               onChanged: (state) => controller.change(
                                   state!,
                                   item,

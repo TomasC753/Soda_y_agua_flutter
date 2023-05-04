@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:soda_y_agua_flutter/widgets/GradientElevatedButton.dart';
+import 'package:soda_y_agua_flutter/widgets/Logos/logo.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 
 import 'controllers/login_controller.dart';
@@ -30,10 +31,9 @@ class LoginScreen extends GetView<LoginController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/Logo_small_white.svg',
-                    colorFilter:
-                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  Logo(
+                    type: LogoType.compactOneColor,
+                    color: Colors.white,
                     height: 150,
                   ),
                   const SizedBox(
@@ -63,6 +63,9 @@ class LoginScreen extends GetView<LoginController> {
                             padding: const EdgeInsets.all(12.0),
                             child: Text(controller.statusError.value),
                           ),
+                        const SizedBox(
+                          height: 16,
+                        ),
                         const Text('Correo Electronico:'),
                         TextFormField(
                           controller: controller.emailController,

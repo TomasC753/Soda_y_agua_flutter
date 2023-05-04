@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/User.dart';
+import 'package:soda_y_agua_flutter/routes.dart';
 import 'package:soda_y_agua_flutter/services/crud_functionalities.dart';
 
 import 'api_service.dart';
 
 class UserService extends GetxService {
   // TODO: UserService
-  late User user;
+  User? user;
+
   final api = ApiService();
   static final CrudFunctionalities<User> crudFunctionalities =
       CrudFunctionalities<User>(
@@ -17,11 +19,11 @@ class UserService extends GetxService {
   Future<bool> checkToken() async {
     try {
       final response =
-          await api.get('/user', options: await api.getTokenAuthorization());
+          await api.get('/myuser', options: await api.getTokenAuthorization());
 
       if (response.statusCode == 200) {
         user = User.fromJson(response.data);
-        user.token = await api.recoveryToken();
+        user!.token = await api.recoveryToken();
         return true;
       }
       api.removeToken();
@@ -55,6 +57,18 @@ class UserService extends GetxService {
         return response;
       }
       return null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      var response =
+          await api.get('logout', options: await api.getTokenAuthorization());
+      if (response.statusCode == 200) {
+        Get.offAllNamed('login');
+      }
     } catch (e) {
       rethrow;
     }

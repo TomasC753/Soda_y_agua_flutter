@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:soda_y_agua_flutter/services/user_service.dart';
+
+var userService = Get.find<UserService>();
 
 class MyNavigationRailController extends GetxController {
   var expanded = false.obs;
@@ -36,20 +39,23 @@ class MyNavigationRail extends GetView<MyNavigationRailController> {
           ),
           extended: controller.expanded.value,
           onDestinationSelected: (int index) => controller.redirectTo(index),
-          destinations: const [
-            NavigationRailDestination(
+          destinations: [
+            const NavigationRailDestination(
                 icon: Icon(Icons.dashboard), label: Text('Dashboard')),
-            NavigationRailDestination(
+            const NavigationRailDestination(
                 icon: Icon(Icons.group), label: Text('Clientes')),
-            NavigationRailDestination(
-                icon: Icon(Icons.location_on), label: Text('Zonas')),
-            NavigationRailDestination(
-                icon: Icon(Icons.local_shipping), label: Text('Productos')),
-            NavigationRailDestination(
-                icon: Icon(Icons.view_list), label: Text('Servicios')),
-            NavigationRailDestination(
+            if (userService.user?.roles?.contains('admin') ?? false)
+              const NavigationRailDestination(
+                  icon: Icon(Icons.location_on), label: Text('Zonas')),
+            if (userService.user?.roles?.contains('admin') ?? false)
+              const NavigationRailDestination(
+                  icon: Icon(Icons.local_shipping), label: Text('Productos')),
+            if (userService.user?.roles?.contains('admin') ?? false)
+              const NavigationRailDestination(
+                  icon: Icon(Icons.view_list), label: Text('Servicios')),
+            const NavigationRailDestination(
                 icon: Icon(Icons.local_offer), label: Text('Ventas')),
-            NavigationRailDestination(
+            const NavigationRailDestination(
                 icon: Icon(Icons.folder), label: Text('Boletas')),
           ],
           selectedIndex: controller.pages.keys.firstWhere(

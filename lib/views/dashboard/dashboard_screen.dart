@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
+import 'package:soda_y_agua_flutter/widgets/my_scaffold.dart';
+import 'package:soda_y_agua_flutter/widgets/MyNavigationRail.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const Drawer(
-        child: MyDrawer(),
-      ),
-      appBar: AppBar(
-        title: Text('Dashboard'),
+    return MyScaffold(
+      title: 'Dashboard',
+      body: Row(
+        children: [
+          MyNavigationRail(),
+        ],
       ),
     );
   }

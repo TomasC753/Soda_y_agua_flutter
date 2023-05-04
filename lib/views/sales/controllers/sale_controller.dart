@@ -9,7 +9,7 @@ class SaleController extends GetxController {
   ResponseList<Sale> sales = ResponseList<Sale>(
       status: Rxn(OperationStatus.empty),
       getterFunction: ({int? id}) async =>
-          await Sale.crudFunctionalities.getAll(),
+          await Sale.crudFunctionalities.getAll(filters: {"orderBy": "DESC"}),
       data: <Sale>[],
       conditionsForSearch: (sale, query) =>
           (sale.client!.lastName.toLowerCase().contains(query) ||

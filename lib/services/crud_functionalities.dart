@@ -1,4 +1,6 @@
 // import 'package:hive/hive.dart';
+import 'dart:convert';
+
 import 'package:soda_y_agua_flutter/models/ideable.dart';
 import 'package:soda_y_agua_flutter/services/api_service.dart';
 
@@ -14,14 +16,16 @@ class CrudFunctionalities<T extends Iideable> {
       required this.pluralModelName,
       required this.serializer});
 
-  Future<List<T>> getAll() async {
+  Future<List<T>> getAll({Map? filters}) async {
     // dataBox ??= await Hive.openBox<T>(pluralModelName);
     // if (dataBox!.isNotEmpty) {
     //   return dataBox!.values.toList();
     // }
     try {
       var tokenForSend = await api.getTokenAuthorization();
-      var response = await api.get(modelName, options: tokenForSend);
+      var response = await api.get(
+          '$modelName${filters != null ? "/${jsonEncode(filters)}" : ""}',
+          options: tokenForSend);
 
       if (response.statusCode == 200) {
         // Almacenar los datos en la caja

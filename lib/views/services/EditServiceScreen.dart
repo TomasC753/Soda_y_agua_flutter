@@ -101,16 +101,20 @@ class EditServiceScreen extends GetView<ServiceEditController> {
                                             children: [
                                               SwitchListTile(
                                                 title: Text(product.name),
-                                                value: controller
-                                                        .productsSelection[
-                                                    '${product.id}']['state'],
+                                                value:
+                                                    (controller.productsSelection[
+                                                                '${product.id}']
+                                                            ?['state'] ??
+                                                        false),
                                                 onChanged: (value) => controller
                                                     .changeStateOfProduct(
                                                         id: product.id,
                                                         value: value),
                                               ),
-                                              controller.productsSelection[
-                                                      '${product.id}']['state']
+                                              (controller.productsSelection[
+                                                              '${product.id}']
+                                                          ?['state'] ??
+                                                      false)
                                                   ? Column(
                                                       children: [
                                                         TextField(

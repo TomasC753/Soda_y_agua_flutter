@@ -10,6 +10,7 @@ import 'package:soda_y_agua_flutter/utils/service_response.dart';
 class ClientCreateController extends GetxController {
   var isLoading = false.obs;
   late Function() onFinish;
+  Client? client;
   ResponseList<Zone> zones = ResponseList<Zone>(
       status: Rxn(OperationStatus.empty),
       getterFunction: ({int? id}) async =>
@@ -52,6 +53,22 @@ class ClientCreateController extends GetxController {
     selectedServices.value = List<int>.from(listIds);
   }
 
+  void editMode(Client obClient) {
+    client = obClient;
+    nameController.text = obClient.name;
+    lastNameController.text = obClient.lastName;
+    domicileController.text = obClient.domicile;
+    clientNumberController.text = obClient.clientNumber ?? '';
+    phoneNumberController.text = obClient.phoneNumber ?? '';
+    zoneController.text = obClient.zone!.name;
+    servicesController.text =
+        obClient.services?.map((e) => e.name).toString() ?? 'Ninguno';
+
+    selectedServices.value =
+        obClient.services?.map((e) => e.id).toList() ?? <int>[];
+    selectedZone = obClient.zoneId;
+  }
+
   bool validate() {
     int errors = 0;
     nameError.value = '';
@@ -82,7 +99,23 @@ class ClientCreateController extends GetxController {
       return;
     }
     Client.crudFunctionalities.store({
-      "user_id": Get.find<UserService>().user.id,
+      "user_id": Get.find<UserService>().user!.id,
+      "name": nameController.text,
+      "last_name": lastNameController.text,
+      "domicile": domicileController.text,
+      "client_number": clientNumberController.text,
+      "phone_number": phoneNumberController.text,
+      "zone_id": selectedZone,
+      "services": jsonEncode(selectedServices.value),
+    });
+
+    onFinish();
+    Get.back();
+  }
+
+  Future<void> edit() async {
+    Client.crudFunctionalities.update(id: client!.id, data: {
+      "user_id": Get.find<UserService>().user!.id,
       "name": nameController.text,
       "last_name": lastNameController.text,
       "domicile": domicileController.text,

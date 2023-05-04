@@ -28,7 +28,7 @@ class ServiceEditController extends GetxController {
     service = pservice;
     setServiceName();
     setServicePrice();
-    buildMaxtrix();
+    products.getData(onSuccess: (products) => buildMaxtrix());
   }
 
   void setServiceName() {
@@ -74,12 +74,6 @@ class ServiceEditController extends GetxController {
     originalProductsSelection = builtProductSelection.toString();
     nameController.text = service.name;
     priceController.text = '${service.price}';
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    products.getData();
   }
 
   void changeStateOfProduct({required int id, required bool value}) {

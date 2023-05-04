@@ -6,6 +6,7 @@ import 'package:soda_y_agua_flutter/views/clients/show_client_screen.dart';
 import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
+import 'package:soda_y_agua_flutter/widgets/my_scaffold.dart';
 
 import '../controllers/client_controller.dart';
 import '../create_client_screen.dart';
@@ -18,10 +19,7 @@ class ClientScreenMobile extends GetView<ClientController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const Drawer(
-        child: MyDrawer(),
-      ),
+    return MyScaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(
             () => CreateClientScreen(
@@ -32,20 +30,11 @@ class ClientScreenMobile extends GetView<ClientController> {
             duration: const Duration(milliseconds: 250)),
         child: const Icon(Icons.add),
       ),
+      title: 'Clientes',
       body: Obx(
         () => !controller.isLoading.value
             ? CustomScrollView(
                 slivers: [
-                  SliverAppBar(
-                    backgroundColor: Theme.of(context).cardColor,
-                    foregroundColor: Theme.of(context).colorScheme.onSurface,
-                    title: Text(
-                      'Clientes',
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                    actions: const [ToggleThemeButton()],
-                  ),
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(17),

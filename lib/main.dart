@@ -9,12 +9,12 @@ import 'package:soda_y_agua_flutter/services/user_service.dart';
 
 import 'routes.dart';
 
-void main() async {
-  initServices();
-  ThemeData lightTheme = ThemeDecoder.decodeThemeData(
-      jsonDecode(await rootBundle.loadString('assets/light_theme.json')))!;
-  ThemeData darkTheme = ThemeDecoder.decodeThemeData(
-      jsonDecode(await rootBundle.loadString('assets/dark_theme.json')))!;
+Future<void> main() async {
+  await initServices();
+  ThemeData lightTheme = ThemeDecoder.decodeThemeData(jsonDecode(
+      await rootBundle.loadString('assets/Themes/light_theme.json')))!;
+  ThemeData darkTheme = ThemeDecoder.decodeThemeData(jsonDecode(
+      await rootBundle.loadString('assets/Themes/dark_theme.json')))!;
   runApp(MyApp(
     lightTheme: lightTheme,
     darkTheme: darkTheme,
@@ -24,14 +24,18 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Hive.initFlutter();
-  Get.putAsync(() async => UserService());
+  await Get.putAsync(() async => UserService());
   print('Servicios Iniciados');
 }
 
 class MyApp extends StatelessWidget {
   ThemeData lightTheme;
   ThemeData darkTheme;
-  MyApp({super.key, required this.lightTheme, required this.darkTheme});
+  MyApp({
+    super.key,
+    required this.lightTheme,
+    required this.darkTheme,
+  });
 
   @override
   Widget build(BuildContext context) {

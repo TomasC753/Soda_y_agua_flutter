@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:soda_y_agua_flutter/models/Client.dart';
 import 'package:soda_y_agua_flutter/widgets/GradientElevatedButton.dart';
-import 'package:soda_y_agua_flutter/widgets/MyNavigationRail.dart';
+import 'package:soda_y_agua_flutter/widgets/Logos/logo.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
-import 'package:soda_y_agua_flutter/widgets/SelectItemField.dart';
-import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
+import 'package:soda_y_agua_flutter/widgets/SelectItemField/select_item_field.dart';
 
 import 'controllers/client_create_controller.dart';
 
 class CreateClientScreen extends GetView<ClientCreateController> {
   Function() onFisnih;
-  CreateClientScreen({Key? key, required this.onFisnih}) : super(key: key);
+  Client? client;
+  CreateClientScreen({Key? key, required this.onFisnih, this.client})
+      : super(key: key);
 
   @override
   final controller = Get.put(ClientCreateController());
 
   @override
   Widget build(BuildContext context) {
+    if (client != null) {
+      controller.editMode(client!);
+    }
     controller.onFinish = onFisnih;
     return Scaffold(
       appBar: AppBar(
@@ -27,8 +31,8 @@ class CreateClientScreen extends GetView<ClientCreateController> {
         title: Row(
           children: [
             Center(
-              child: SvgPicture.asset(
-                'assets/logo_single.svg',
+              child: Logo(
+                type: LogoType.shield,
                 width: 45,
               ),
             ),
@@ -54,26 +58,18 @@ class CreateClientScreen extends GetView<ClientCreateController> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/Logo_single.svg',
-                                  width: 100,
-                                ),
-                                Text(
-                                  'Soda y Agua',
-                                  style:
-                                      Theme.of(context).textTheme.displaySmall,
-                                )
-                              ],
+                            Logo(
+                              type: LogoType.compactOneColor,
+                              color: Theme.of(context).colorScheme.onBackground,
+                              width: 225,
                             ),
                             const SizedBox(
                               height: 26,
                             ),
                             Text(
-                              'Registrar un nuevo cliente',
+                              client == null
+                                  ? "Registrar un nuevo cliente"
+                                  : "Editar cliente",
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(
@@ -184,7 +180,12 @@ class CreateClientScreen extends GetView<ClientCreateController> {
                                           title: zone.name,
                                           subtitle: zone.city,
                                           value: zone.id))
-                                      .toList()),
+                                      .toList(),
+                                  selectedItem: client != null
+                                      ? SelectableList(
+                                          title: client!.zone!.name,
+                                          value: client!.zoneId)
+                                      : null),
                             ),
                             const SizedBox(
                               height: 16,
@@ -221,16 +222,29 @@ class CreateClientScreen extends GetView<ClientCreateController> {
                                           subtitle:
                                               'Precio por mes: \$${service.price}',
                                           value: service.id))
+                                      .toList(),
+                                  checkedItems: controller.client?.services
+                                      ?.map((service) => SelectableList(
+                                          title: service.name,
+                                          subtitle:
+                                              'Precio por mes: \$${service.price}',
+                                          value: service.id))
                                       .toList()),
                             ),
                             const SizedBox(
                               height: 16,
                             ),
-                            GradientElevatedButton(
-                                onPressed: () => controller.create(),
-                                borderRadius: BorderRadius.circular(20),
-                                width: double.infinity,
-                                child: const Text('Registrar Cliente'))
+                            client == null
+                                ? GradientElevatedButton(
+                                    onPressed: () => controller.create(),
+                                    borderRadius: BorderRadius.circular(20),
+                                    width: double.infinity,
+                                    child: const Text('Registrar Cliente'))
+                                : GradientElevatedButton(
+                                    onPressed: () => controller.edit(),
+                                    borderRadius: BorderRadius.circular(20),
+                                    width: double.infinity,
+                                    child: const Text('Actualizar Cliente'))
                           ],
                         ),
                       ),

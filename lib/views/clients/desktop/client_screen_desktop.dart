@@ -5,9 +5,11 @@ import 'package:soda_y_agua_flutter/models/Client.dart';
 import 'package:soda_y_agua_flutter/utils/service_response.dart';
 import 'package:soda_y_agua_flutter/views/clients/controllers/client_controller.dart';
 import 'package:soda_y_agua_flutter/views/clients/create_client_screen.dart';
+import 'package:soda_y_agua_flutter/widgets/Logos/logo.dart';
 import 'package:soda_y_agua_flutter/widgets/MyNavigationRail.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
+import 'package:soda_y_agua_flutter/widgets/my_scaffold.dart';
 // import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
 
 import '../show_client_screen.dart';
@@ -20,7 +22,7 @@ class ClientScreenDesktop extends GetView<ClientController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MyScaffold(
         // drawer: const Drawer(child: MyDrawer()),
         floatingActionButton: FloatingActionButton(
             onPressed: () => Get.to(
@@ -30,26 +32,7 @@ class ClientScreenDesktop extends GetView<ClientController> {
                 transition: Transition.downToUp,
                 duration: const Duration(milliseconds: 250)),
             child: const Icon(Icons.add)),
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).dividerColor,
-          elevation: 0,
-          foregroundColor: Theme.of(context).colorScheme.onBackground,
-          title: Row(
-            children: [
-              Center(
-                child: SvgPicture.asset(
-                  'assets/logo_single.svg',
-                  width: 45,
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              const Text('Clientes'),
-            ],
-          ),
-          actions: const [ToggleThemeButton()],
-        ),
+        title: 'Registro de Clientes',
         body: Obx(
           () => !controller.isLoading.value
               ? Row(
@@ -188,20 +171,12 @@ class ClientScreenDesktop extends GetView<ClientController> {
                         ),
                         Expanded(
                             child: controller.selectedClient.returnContentWhen(
-                                onEmpty: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/Logo_single.svg',
-                                      width: 250,
-                                    ),
-                                    Text(
-                                      'SODA Y AGUA',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall,
-                                    )
-                                  ],
+                                onEmpty: Logo(
+                                  type: LogoType.normalOneColor,
+                                  width: 250,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
                                 ),
                                 onLoading: const Center(
                                   child: CircularProgressIndicator(),
@@ -214,42 +189,49 @@ class ClientScreenDesktop extends GetView<ClientController> {
                                     ? ShowClientScreen(
                                         client: controller
                                             .selectedClient.data.value!,
+                                        editAction: () => Get.to(
+                                            CreateClientScreen(
+                                              client: controller
+                                                  .selectedClient.data.value,
+                                              onFisnih: () =>
+                                                  controller.clients.getData(),
+                                            ),
+                                            fullscreenDialog: true,
+                                            transition: Transition.rightToLeft,
+                                            duration: const Duration(
+                                                milliseconds: 250)),
                                         deleteACtion: () =>
                                             Get.dialog(AlertDialog(
-                                              title: const Text(
-                                                  'Eliminar cliente'),
-                                              icon: const Icon(Icons.warning),
-                                              iconColor: Colors.orange,
-                                              content: Text(
-                                                  '¿Estas seguro de que deseas eliminar a ${controller.selectedClient.data.value!.lastName} ${controller.selectedClient.data.value!.name}?'),
-                                              actions: [
-                                                TextButton(
-                                                    onPressed: () => Get.back(),
-                                                    child:
-                                                        const Text('Cancelar')),
-                                                TextButton(
-                                                  onPressed: () => {
-                                                    Client.crudFunctionalities
-                                                        .destroy(controller
-                                                            .selectedClient
-                                                            .data
-                                                            .value!
-                                                            .id),
-                                                    controller.clients
-                                                        .getData(),
-                                                    Get.back(),
-                                                    controller.selectedClient
-                                                            .status.value =
-                                                        OperationStatus.empty
-                                                  },
-                                                  style: TextButton.styleFrom(
-                                                      foregroundColor:
-                                                          Colors.red),
-                                                  child: const Text('Eliminar'),
-                                                )
-                                              ],
-                                            )),
-                                        editAction: () => {})
+                                          title: const Text('Eliminar cliente'),
+                                          icon: const Icon(Icons.warning),
+                                          iconColor: Colors.orange,
+                                          content: Text(
+                                              '¿Estas seguro de que deseas eliminar a ${controller.selectedClient.data.value!.lastName} ${controller.selectedClient.data.value!.name}?'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () => Get.back(),
+                                                child: const Text('Cancelar')),
+                                            TextButton(
+                                              onPressed: () => {
+                                                Client.crudFunctionalities
+                                                    .destroy(controller
+                                                        .selectedClient
+                                                        .data
+                                                        .value!
+                                                        .id),
+                                                controller.clients.getData(),
+                                                Get.back(),
+                                                controller.selectedClient.status
+                                                        .value =
+                                                    OperationStatus.empty
+                                              },
+                                              style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.red),
+                                              child: const Text('Eliminar'),
+                                            )
+                                          ],
+                                        )),
+                                      )
                                     : const SizedBox()))
                       ],
                     )),

@@ -6,6 +6,7 @@ import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
 import 'package:soda_y_agua_flutter/widgets/MyNavigationRail.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
+import 'package:soda_y_agua_flutter/widgets/my_scaffold.dart';
 
 import 'controllers/sale_controller.dart';
 import 'create_and_edit_sale_screen.dart';
@@ -20,7 +21,7 @@ class SalesScreen extends GetView<SaleController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MyScaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(
                 () => CreateAndEditSaleScreen(
@@ -32,29 +33,7 @@ class SalesScreen extends GetView<SaleController> {
             ?.then((value) => Get.delete<SaleCreateController>()),
         child: const Icon(Icons.add),
       ),
-      drawer: MediaQuery.of(context).size.width < 1024
-          ? const Drawer(child: MyDrawer())
-          : null,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).dividerColor,
-        elevation: 0,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
-        title: Row(
-          children: [
-            Center(
-              child: SvgPicture.asset(
-                'assets/logo_single.svg',
-                width: 45,
-              ),
-            ),
-            const SizedBox(
-              width: 16,
-            ),
-            const Text('Registro de ventas'),
-          ],
-        ),
-        actions: const [ToggleThemeButton()],
-      ),
+      title: 'Registro de ventas',
       body: Obx(() => controller.isLoading.value
           ? const Center(
               child: CircularProgressIndicator(),

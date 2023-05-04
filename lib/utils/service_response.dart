@@ -15,12 +15,13 @@ class IServiceResponse<T> {
 
   Future<void> getData({int? id, void Function(T)? onSuccess}) async {}
 
-  Widget returnContentWhen(
-      {Widget? onSuccess,
-      Widget? onLoading,
-      Widget? onError,
-      Widget? onEmpty,
-      Widget? onLoadingMore}) {
+  Widget returnContentWhen({
+    Widget? onSuccess,
+    Widget? onLoading,
+    Widget? onError,
+    Widget? onEmpty,
+    Widget? onLoadingMore,
+  }) {
     Map<OperationStatus, Widget?> results = {
       OperationStatus.success: onSuccess,
       OperationStatus.loading: onLoading,

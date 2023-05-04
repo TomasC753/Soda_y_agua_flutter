@@ -15,6 +15,8 @@ class User implements Iideable {
   String email;
   String? token;
   List<Client>? clients;
+  List<String>? roles;
+  List<String>? permissions;
   List<Zone>? zones;
   List<Sale>? sales;
   List<Consumption>? consumptions;
@@ -33,6 +35,8 @@ class User implements Iideable {
       this.token,
       this.clients,
       this.zones,
+      this.roles,
+      this.permissions,
       this.consumptions,
       this.sales,
       this.pivot});
@@ -42,6 +46,8 @@ class User implements Iideable {
         id: json['id'],
         token: json['token'],
         name: json['name'],
+        roles: List<String>.from(json['roles_names']),
+        permissions: List<String>.from(json['permissions_names']),
         email: json['email'],
         pivot: json['pivot']);
 

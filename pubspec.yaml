@@ -69,13 +69,14 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/light_theme.json
-    - assets/dark_theme.json
-    - assets/Logo.svg
-    - assets/Logo_small.svg
-    - assets/Logo_white.svg
-    - assets/Logo_small_white.svg
-    - assets/Logo_single.svg
+    - assets/Themes/light_theme.json
+    - assets/Themes/dark_theme.json
+    - assets/Logos/Nec_coffee_color_compact.svg
+    - assets/Logos/Nec_coffee_color_v2.svg
+    - assets/Logos/Nec_coffee_shield_color.svg
+    - assets/Logos/Nec_coffee_only_black_compact.svg
+    - assets/Logos/Nec_coffee_only_black_v2.svg
+    - assets/Logos/Nec_coffee_shield_one_color.svg
     # - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

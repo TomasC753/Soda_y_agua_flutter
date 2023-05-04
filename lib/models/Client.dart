@@ -111,8 +111,8 @@ class Client implements Iideable {
             });
 
     late Map<String, dynamic> limitsAndConsumptions;
-    late Map<String, dynamic> consumptions;
-    late Map<String, dynamic> limits;
+    late dynamic consumptions;
+    late dynamic limits;
     isFilled(
         json['limits_and_consumptions'],
         () => {
@@ -121,9 +121,15 @@ class Client implements Iideable {
               limits = limitsAndConsumptions['limits'],
               client.limitsAndConsumptions = <String, Map<String, int>>{},
               client.limitsAndConsumptions!['consumptions'] =
-                  consumptions.map((key, value) => MapEntry(key, value as int)),
-              client.limitsAndConsumptions!['limits'] =
-                  limits.map((key, value) => MapEntry(key, value as int))
+                  consumptions is Map<String, dynamic>
+                      ? Map<String, int>.from(consumptions
+                          .map((key, value) => MapEntry(key, value as int)))
+                      : <String, int>{},
+              client.limitsAndConsumptions!['limits'] = limits
+                      is Map<String, dynamic>
+                  ? Map<String, int>.from(
+                      limits.map((key, value) => MapEntry(key, value as int)))
+                  : <String, int>{}
             });
 
     return client;

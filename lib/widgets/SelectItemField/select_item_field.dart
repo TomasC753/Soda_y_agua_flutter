@@ -10,13 +10,14 @@ part '_selectable_list.dart';
 class SelectItemsField {
   static single<T>(
       {T? defaultValue,
+      SelectableList? selectedItem,
       required TextEditingController textController,
       required Function(T?) onChanged,
       InputDecoration? decoration,
       required List<SelectableList> items}) {
     return _InputSelectField(
       widgetConstructor: _SelectItemsSingle<T>(
-        defaultValue: defaultValue,
+        selectedItem: selectedItem,
         onChanged: onChanged,
         items: items,
         textController: textController,
@@ -27,16 +28,17 @@ class SelectItemsField {
   }
 
   static multiple<T>(
-      {T? defaultValue,
-      required TextEditingController textController,
+      {required TextEditingController textController,
       required Function(dynamic) onChanged,
       InputDecoration? decoration,
+      List<SelectableList>? checkedItems,
       required List<SelectableList> items}) {
     return _InputSelectField(
       widgetConstructor: _MultipleSelectItemsField<T>(
         items: items,
         onChanged: onChanged,
         textController: textController,
+        checkedItems: checkedItems,
       ),
       textController: textController,
       decoration: decoration,
