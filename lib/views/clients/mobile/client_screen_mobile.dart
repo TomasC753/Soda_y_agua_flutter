@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/Client.dart';
 import 'package:soda_y_agua_flutter/utils/service_response.dart';
 import 'package:soda_y_agua_flutter/views/clients/show_client_screen.dart';
-import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
+import 'package:soda_y_agua_flutter/widgets/Navigation/MyDrawer.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
 import 'package:soda_y_agua_flutter/widgets/my_scaffold.dart';

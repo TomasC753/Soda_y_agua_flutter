@@ -4,6 +4,7 @@ import 'package:soda_y_agua_flutter/utils/modelMatcher.dart';
 
 import 'Client.dart';
 import 'Consumption.dart';
+import 'Role.dart';
 import 'Sale.dart';
 import 'Zone.dart';
 import 'ideable.dart';
@@ -15,8 +16,8 @@ class User implements Iideable {
   String email;
   String? token;
   List<Client>? clients;
-  List<String>? roles;
-  List<String>? permissions;
+  List<Role>? roles;
+  List<Permission>? permissions;
   List<Zone>? zones;
   List<Sale>? sales;
   List<Consumption>? consumptions;
@@ -46,8 +47,6 @@ class User implements Iideable {
         id: json['id'],
         token: json['token'],
         name: json['name'],
-        roles: List<String>.from(json['roles_names']),
-        permissions: List<String>.from(json['permissions_names']),
         email: json['email'],
         pivot: json['pivot']);
 
@@ -71,6 +70,18 @@ class User implements Iideable {
         json['sales'],
         () => user.sales = relateMatrixToModel<Sale>(
             data: json['sales'], serializerOfModel: Sale.fromJson));
+
+    isFilled(
+        json['roles'],
+        () => user.roles = relateMatrixToModel<Role>(
+            data: json['roles'], serializerOfModel: Role.fromJson));
+
+    isFilled(
+        json['permissions_names'],
+        () => user.permissions = List<Permission>.from(json['permissions_names']
+            .map((permission) => permissionsMap[permission])
+            .toList()));
+
     return user;
   }
 }

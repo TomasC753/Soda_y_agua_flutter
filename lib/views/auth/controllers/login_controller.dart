@@ -46,7 +46,7 @@ class LoginController extends GetxController {
     super.onInit();
     try {
       if (await service.checkToken()) {
-        Get.toNamed('/dashboard');
+        Get.offAllNamed('/dashboard');
       }
     } catch (e) {
       statusError.value = e.toString();

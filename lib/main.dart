@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_theme/json_theme.dart';
+import 'package:soda_y_agua_flutter/services/route_service.dart';
 import 'package:soda_y_agua_flutter/services/user_service.dart';
 
 import 'routes.dart';
@@ -25,6 +26,7 @@ Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Hive.initFlutter();
   await Get.putAsync(() async => UserService());
+  await Get.putAsync(() async => RouteService());
   print('Servicios Iniciados');
 }
 

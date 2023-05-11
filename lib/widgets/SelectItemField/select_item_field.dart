@@ -29,7 +29,7 @@ class SelectItemsField {
 
   static multiple<T>(
       {required TextEditingController textController,
-      required Function(dynamic) onChanged,
+      required Function(List<T>) onChanged,
       InputDecoration? decoration,
       List<SelectableList>? checkedItems,
       required List<SelectableList> items}) {

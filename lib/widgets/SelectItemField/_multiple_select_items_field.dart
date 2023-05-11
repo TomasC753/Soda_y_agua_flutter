@@ -11,8 +11,7 @@ class _SelectItemsMultipleController<T> extends GetxController {
     printedItems.value = items;
   }
 
-  void change(
-      bool state, SelectableList item, Function(List<dynamic>) onChanged) {
+  void change<E>(bool state, SelectableList item, Function(List<E>) onChanged) {
     //
     if (!checkedItems.any((element) => element.value == item.value)) {
       checkedItems.add(item);
@@ -21,7 +20,7 @@ class _SelectItemsMultipleController<T> extends GetxController {
     }
 
     textController.text = checkedItems.map((item) => item.title).toString();
-    onChanged(checkedItems.map((item) => item.value).toList());
+    onChanged(List<E>.from(checkedItems.map((item) => item.value).toList()));
   }
 
   void search(String query) {
@@ -43,7 +42,7 @@ class _MultipleSelectItemsField<T>
   TextEditingController textController;
   List<SelectableList> items;
   List<SelectableList>? checkedItems;
-  Function(dynamic) onChanged;
+  Function(List<T>) onChanged;
   _MultipleSelectItemsField(
       {Key? key,
       this.decoration,
@@ -55,7 +54,8 @@ class _MultipleSelectItemsField<T>
       : super(key: key);
 
   @override
-  var controller = Get.put(_SelectItemsMultipleController());
+  final controller =
+      Get.put(_SelectItemsMultipleController(), tag: DateTime.now().toString());
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class _MultipleSelectItemsField<T>
                               subtitle: Text(item.subtitle ?? ''),
                               value: controller.checkedItems
                                   .any((e) => e.value == item.value),
-                              onChanged: (state) => controller.change(
+                              onChanged: (state) => controller.change<T>(
                                   state!,
                                   item,
                                   (checkedItems) => onChanged(checkedItems))))

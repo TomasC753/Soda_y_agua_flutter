@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/User.dart';
 import 'package:soda_y_agua_flutter/routes.dart';
 import 'package:soda_y_agua_flutter/services/crud_functionalities.dart';
+import 'package:soda_y_agua_flutter/services/route_service.dart';
 
 import 'api_service.dart';
 
@@ -24,6 +25,7 @@ class UserService extends GetxService {
       if (response.statusCode == 200) {
         user = User.fromJson(response.data);
         user!.token = await api.recoveryToken();
+        Get.find<RouteService>().obtainRoutes();
         return true;
       }
       api.removeToken();
@@ -42,21 +44,10 @@ class UserService extends GetxService {
       if (response.statusCode == 200) {
         api.saveToken(response.data['token']);
         user = User.fromJson(response.data);
-        Get.toNamed('/dashboard');
+        Get.find<RouteService>().obtainRoutes();
+        Get.offAllNamed('/dashboard');
       }
       return true;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<List<User>?> getUsers() async {
-    try {
-      var response = await crudFunctionalities.getAll();
-      if (response is List<User>) {
-        return response;
-      }
-      return null;
     } catch (e) {
       rethrow;
     }

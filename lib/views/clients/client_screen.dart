@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soda_y_agua_flutter/views/clients/desktop/client_screen_desktop.dart';
-import 'package:soda_y_agua_flutter/widgets/MyDrawer.dart';
+import 'package:soda_y_agua_flutter/widgets/Navigation/MyDrawer.dart';
 
 import 'mobile/client_screen_mobile.dart';
 

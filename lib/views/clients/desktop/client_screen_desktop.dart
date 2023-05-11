@@ -6,7 +6,7 @@ import 'package:soda_y_agua_flutter/utils/service_response.dart';
 import 'package:soda_y_agua_flutter/views/clients/controllers/client_controller.dart';
 import 'package:soda_y_agua_flutter/views/clients/create_client_screen.dart';
 import 'package:soda_y_agua_flutter/widgets/Logos/logo.dart';
-import 'package:soda_y_agua_flutter/widgets/MyNavigationRail.dart';
+import 'package:soda_y_agua_flutter/widgets/Navigation/MyNavigationRail.dart';
 import 'package:soda_y_agua_flutter/widgets/RoundedInputStyle.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
 import 'package:soda_y_agua_flutter/widgets/my_scaffold.dart';

@@ -5,7 +5,7 @@ import 'package:soda_y_agua_flutter/services/user_service.dart';
 import 'package:soda_y_agua_flutter/widgets/Logos/logo.dart';
 import 'package:soda_y_agua_flutter/widgets/ToggleThemeButton.dart';
 
-import 'MyDrawer.dart';
+import 'Navigation/MyDrawer.dart';
 
 class MyScaffold extends StatelessWidget {
   Widget? body;

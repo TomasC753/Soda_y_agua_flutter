@@ -9,6 +9,7 @@ import 'package:soda_y_agua_flutter/views/services/service_screen.dart';
 import 'package:soda_y_agua_flutter/views/zones/zone_screen.dart';
 
 import 'views/sales/sales_screen.dart';
+import 'views/users/user_screen.dart';
 
 var routes = [
   GetPage(name: '/login', page: () => LoginScreen()),
@@ -18,4 +19,5 @@ var routes = [
   GetPage(name: '/services', page: () => ServiceScreen()),
   GetPage(name: '/zones', page: () => ZoneScreen()),
   GetPage(name: '/sales', page: () => SalesScreen()),
+  GetPage(name: '/users', page: () => UserScreen())
 ];
