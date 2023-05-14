@@ -40,7 +40,7 @@ class ServiceCreateController extends GetxController {
       return;
     }
 
-    await Service.crudFunctionalities.store({
+    await Service.dataService.store({
       "name": nameController.text,
       "price": double.parse(priceController.text)
     });

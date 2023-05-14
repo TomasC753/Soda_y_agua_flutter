@@ -15,8 +15,7 @@ class ServiceEditController extends GetxController {
 
   ResponseList<Product> products = ResponseList<Product>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Product.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => await Product.dataService.getAll(),
       data: <Product>[]);
 
   var nameController = TextEditingController();
@@ -100,7 +99,7 @@ class ServiceEditController extends GetxController {
         'price': product['price']
       });
     });
-    Service.crudFunctionalities.update(id: service.id, data: {
+    Service.dataService.update(id: service.id, data: {
       "name": nameController.text,
       "price": double.tryParse(priceController.text) ?? 0,
       "products": jsonEncode(finalProductsSelection)

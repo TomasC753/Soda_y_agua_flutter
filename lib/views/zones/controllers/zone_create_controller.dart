@@ -40,7 +40,7 @@ class ZoneCreateController extends GetxController {
     if (!validate()) {
       return;
     }
-    await Zone.crudFunctionalities.update(
+    await Zone.dataService.update(
         id: zoneEditing,
         data: {"name": nameController.text, "city": cityController.text});
 
@@ -55,7 +55,7 @@ class ZoneCreateController extends GetxController {
       return;
     }
 
-    await Zone.crudFunctionalities
+    await Zone.dataService
         .store({"name": nameController.text, "city": cityController.text});
 
     nameController.text = '';

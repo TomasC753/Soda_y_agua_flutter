@@ -13,12 +13,12 @@ class UserCreateController extends GetxController {
 
   ResponseList<Zone> zones = ResponseList<Zone>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async => Zone.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => Zone.dataService.getAll(),
       data: <Zone>[]);
 
   ResponseList<Role> roles = ResponseList<Role>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async => Role.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => Role.dataService.getAll(),
       data: <Role>[]);
 
   var nameController = TextEditingController();
@@ -83,7 +83,7 @@ class UserCreateController extends GetxController {
     if (!validate()) {
       return;
     }
-    await User.crudFunctionalities.store({
+    await User.dataService.store({
       'name': nameController.text,
       'email': emailController.text,
       'password': passwordController.text,
@@ -99,7 +99,7 @@ class UserCreateController extends GetxController {
     if (!validate(passwordRequired: false)) {
       return;
     }
-    await User.crudFunctionalities.update(id: user!.id, data: {
+    await User.dataService.update(id: user!.id, data: {
       'name': nameController.text,
       'email': emailController.text,
       'password': passwordController.text,

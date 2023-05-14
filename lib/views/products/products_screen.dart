@@ -122,8 +122,8 @@ class ProductsScreen extends GetView<ProductController> {
                                                           TextButton(
                                                             onPressed: () => {
                                                               Product
-                                                                  .crudFunctionalities
-                                                                  .destroy(
+                                                                  .dataService
+                                                                  .delete(
                                                                       product
                                                                           .id),
                                                               Get.back(),

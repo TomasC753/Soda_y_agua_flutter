@@ -97,9 +97,8 @@ class ClientScreenDesktop extends GetView<ClientController> {
                                                                 'Cancelar')),
                                                         TextButton(
                                                           onPressed: () => {
-                                                            Client
-                                                                .crudFunctionalities
-                                                                .destroy(
+                                                            Client.dataService
+                                                                .delete(
                                                                     client.id),
                                                             controller.clients
                                                                 .getData(),
@@ -213,12 +212,9 @@ class ClientScreenDesktop extends GetView<ClientController> {
                                                 child: const Text('Cancelar')),
                                             TextButton(
                                               onPressed: () => {
-                                                Client.crudFunctionalities
-                                                    .destroy(controller
-                                                        .selectedClient
-                                                        .data
-                                                        .value!
-                                                        .id),
+                                                Client.dataService.delete(
+                                                    controller.selectedClient
+                                                        .data.value!.id),
                                                 controller.clients.getData(),
                                                 Get.back(),
                                                 controller.selectedClient.status

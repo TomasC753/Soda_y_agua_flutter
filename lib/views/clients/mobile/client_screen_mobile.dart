@@ -78,8 +78,8 @@ class ClientScreenMobile extends GetView<ClientController> {
                                                       const Text('Cancelar')),
                                               TextButton(
                                                 onPressed: () => {
-                                                  Client.crudFunctionalities
-                                                      .destroy(client.id),
+                                                  Client.dataService
+                                                      .delete(client.id),
                                                   controller.clients.getData(),
                                                   Get.back()
                                                 },
@@ -124,8 +124,8 @@ class ClientScreenMobile extends GetView<ClientController> {
                                                             TextButton(
                                                               onPressed: () => {
                                                                 Client
-                                                                    .crudFunctionalities
-                                                                    .destroy(
+                                                                    .dataService
+                                                                    .delete(
                                                                         client
                                                                             .id),
                                                                 controller

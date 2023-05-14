@@ -8,8 +8,7 @@ class ZoneController extends GetxController {
 
   ResponseList<Zone> zones = ResponseList<Zone>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Zone.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => await Zone.dataService.getAll(),
       data: <Zone>[],
       conditionsForSearch: (zone, query) =>
           zone.name.toLowerCase().contains(query) ||

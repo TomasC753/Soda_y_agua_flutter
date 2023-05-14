@@ -220,9 +220,8 @@ class ConsumptionScreen extends GetView<ConsumptionController> {
                                                             'Cancelar')),
                                                     TextButton(
                                                       onPressed: () => {
-                                                        Consumption
-                                                            .crudFunctionalities
-                                                            .destroy(
+                                                        Consumption.dataService
+                                                            .delete(
                                                                 consumption.id),
                                                         Get.back(),
                                                         controller

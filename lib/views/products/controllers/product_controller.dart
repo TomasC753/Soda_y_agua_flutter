@@ -8,7 +8,7 @@ class ProductController extends GetxController {
 
   ResponseList<Product> products = ResponseList<Product>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async => Product.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => Product.dataService.getAll(),
       data: <Product>[],
       conditionsForSearch: (product, query) =>
           product.name.toLowerCase().contains(query));

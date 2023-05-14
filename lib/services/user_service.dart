@@ -1,21 +1,17 @@
 import 'package:get/get.dart';
 import 'package:soda_y_agua_flutter/models/User.dart';
 import 'package:soda_y_agua_flutter/routes.dart';
-import 'package:soda_y_agua_flutter/services/crud_functionalities.dart';
+import 'package:soda_y_agua_flutter/services/connection/api/crud_operations.dart';
 import 'package:soda_y_agua_flutter/services/route_service.dart';
 
-import 'api_service.dart';
+import 'connection/api/api_service.dart';
+import 'connection/synchronization/synchronization_service.dart';
 
 class UserService extends GetxService {
-  // TODO: UserService
   User? user;
 
   final api = ApiService();
-  static final CrudFunctionalities<User> crudFunctionalities =
-      CrudFunctionalities<User>(
-          modelName: 'user',
-          pluralModelName: 'users',
-          serializer: User.fromJson);
+  static var crudFunctionalities = User.dataService;
 
   Future<bool> checkToken() async {
     try {
@@ -26,6 +22,7 @@ class UserService extends GetxService {
         user = User.fromJson(response.data);
         user!.token = await api.recoveryToken();
         Get.find<RouteService>().obtainRoutes();
+        Get.find<SynchronizationService>().init();
         return true;
       }
       api.removeToken();
@@ -45,6 +42,7 @@ class UserService extends GetxService {
         api.saveToken(response.data['token']);
         user = User.fromJson(response.data);
         Get.find<RouteService>().obtainRoutes();
+        Get.find<SynchronizationService>().init();
         Get.offAllNamed('/dashboard');
       }
       return true;

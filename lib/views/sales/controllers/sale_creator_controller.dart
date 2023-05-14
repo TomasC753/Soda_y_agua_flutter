@@ -14,25 +14,22 @@ class SaleCreateController extends GetxController {
   ResponseList<Client> clients = ResponseList<Client>(
       data: <Client>[],
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Client.crudFunctionalities.getAll());
+      getterFunction: ({int? id}) async => await Client.dataService.getAll());
 
   ResponseGeneric<Client> selectedClient = ResponseGeneric<Client>(
       data: Rxn<Client>(),
       status: Rxn(OperationStatus.empty),
       getterFunction: ({int? id}) async =>
-          await Client.crudFunctionalities.getById(id!));
+          await Client.dataService.getById(id!));
 
   ResponseList<Product> products = ResponseList<Product>(
       data: <Product>[],
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Product.crudFunctionalities.getAll());
+      getterFunction: ({int? id}) async => await Product.dataService.getAll());
 
   ResponseList<Service> services = ResponseList<Service>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Service.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => await Service.dataService.getAll(),
       data: <Service>[]);
 
   late Function onFinish;

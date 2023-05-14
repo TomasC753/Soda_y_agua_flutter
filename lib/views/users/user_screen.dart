@@ -131,7 +131,7 @@ class UserScreen extends GetView<UsersController> {
                                                                                 TextButton(onPressed: () => Get.back(), child: const Text('Cancelar')),
                                                                                 TextButton(
                                                                                   onPressed: () => {
-                                                                                    User.crudFunctionalities.destroy(user.id),
+                                                                                    User.dataService.delete(user.id),
                                                                                     Get.back(),
                                                                                     controller.users.getData()
                                                                                   },

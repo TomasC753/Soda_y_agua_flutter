@@ -48,7 +48,7 @@ class ProductCreateController extends GetxController {
       return;
     }
 
-    Product.crudFunctionalities.update(id: productEditing, data: {
+    Product.dataService.update(id: productEditing, data: {
       "name": nameController.text,
       "price": double.parse(priceController.text)
     });
@@ -64,7 +64,7 @@ class ProductCreateController extends GetxController {
       return;
     }
 
-    await Product.crudFunctionalities.store({
+    await Product.dataService.store({
       "name": nameController.text,
       "price": double.parse(priceController.text)
     });

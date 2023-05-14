@@ -2,25 +2,16 @@
 import 'dart:convert';
 
 import 'package:soda_y_agua_flutter/models/ideable.dart';
-import 'package:soda_y_agua_flutter/services/api_service.dart';
+import 'package:soda_y_agua_flutter/services/connection/api/api_service.dart';
 
-class CrudFunctionalities<T extends Iideable> {
+class ApiCrudOperations<T extends Iideable> {
   String modelName;
-  String pluralModelName;
   Function serializer;
-  // Box<T>? dataBox;
   final api = ApiService();
 
-  CrudFunctionalities(
-      {required this.modelName,
-      required this.pluralModelName,
-      required this.serializer});
+  ApiCrudOperations({required this.modelName, required this.serializer});
 
   Future<List<T>> getAll({Map? filters}) async {
-    // dataBox ??= await Hive.openBox<T>(pluralModelName);
-    // if (dataBox!.isNotEmpty) {
-    //   return dataBox!.values.toList();
-    // }
     try {
       var tokenForSend = await api.getTokenAuthorization();
       var response = await api.get(

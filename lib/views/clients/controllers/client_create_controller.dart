@@ -13,14 +13,12 @@ class ClientCreateController extends GetxController {
   Client? client;
   ResponseList<Zone> zones = ResponseList<Zone>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Zone.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => await Zone.dataService.getAll(),
       data: <Zone>[]);
 
   ResponseList<Service> services = ResponseList<Service>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Service.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => await Service.dataService.getAll(),
       data: <Service>[]);
 
   var nameController = TextEditingController();
@@ -98,7 +96,7 @@ class ClientCreateController extends GetxController {
     if (!validate()) {
       return;
     }
-    Client.crudFunctionalities.store({
+    Client.dataService.store({
       "user_id": Get.find<UserService>().user!.id,
       "name": nameController.text,
       "last_name": lastNameController.text,
@@ -114,7 +112,7 @@ class ClientCreateController extends GetxController {
   }
 
   Future<void> edit() async {
-    Client.crudFunctionalities.update(id: client!.id, data: {
+    Client.dataService.update(id: client!.id, data: {
       "user_id": Get.find<UserService>().user!.id,
       "name": nameController.text,
       "last_name": lastNameController.text,

@@ -8,16 +8,14 @@ class UsersController extends GetxController {
 
   ResponseList<User> users = ResponseList<User>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await User.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => await User.dataService.getAll(),
       data: <User>[],
       conditionsForSearch: (userr, query) =>
           userr.name.toLowerCase().contains(query));
 
   ResponseGeneric<User> user = ResponseGeneric<User>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await User.crudFunctionalities.getById(id!),
+      getterFunction: ({int? id}) async => await User.dataService.getById(id!),
       data: Rxn<User>());
 
   @override

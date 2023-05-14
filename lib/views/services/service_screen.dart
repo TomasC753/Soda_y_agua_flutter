@@ -122,8 +122,8 @@ class ServiceScreen extends GetView<ServiceController> {
                                                           TextButton(
                                                             onPressed: () => {
                                                               Service
-                                                                  .crudFunctionalities
-                                                                  .destroy(
+                                                                  .dataService
+                                                                  .delete(
                                                                       service
                                                                           .id),
                                                               Get.back(),

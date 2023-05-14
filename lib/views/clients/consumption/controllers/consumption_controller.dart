@@ -115,7 +115,7 @@ class ConsumptionController extends GetxController {
     if (!validateForEdit(consumption)) {
       return;
     }
-    await Consumption.crudFunctionalities.update(id: consumption.id, data: {
+    await Consumption.dataService.update(id: consumption.id, data: {
       "service_id": service.id,
       "product_id": productForEdit!.id,
       "client_id": client.id,

@@ -8,8 +8,7 @@ class ServiceController extends GetxController {
 
   ResponseList<Service> services = ResponseList<Service>(
       status: Rxn(OperationStatus.empty),
-      getterFunction: ({int? id}) async =>
-          await Service.crudFunctionalities.getAll(),
+      getterFunction: ({int? id}) async => await Service.dataService.getAll(),
       data: <Service>[],
       conditionsForSearch: (service, query) =>
           service.name.toLowerCase().contains(query));
@@ -17,7 +16,7 @@ class ServiceController extends GetxController {
   ResponseGeneric<Service> service = ResponseGeneric<Service>(
       status: Rxn(OperationStatus.empty),
       getterFunction: ({int? id}) async =>
-          await Service.crudFunctionalities.getById(id!),
+          await Service.dataService.getById(id!),
       data: Rxn<Service>());
 
   @override

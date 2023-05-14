@@ -121,8 +121,8 @@ class ZoneScreen extends GetView<ZoneController> {
                                                                   'Cancelar')),
                                                           TextButton(
                                                             onPressed: () => {
-                                                              Zone.crudFunctionalities
-                                                                  .destroy(
+                                                              Zone.dataService
+                                                                  .delete(
                                                                       zone.id),
                                                               Get.back(),
                                                               controller.zones
